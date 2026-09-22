@@ -1,23 +1,26 @@
 <script lang="ts">
-	import { UserPlus, Sprout, Goal } from '@lucide/svelte';
+	import Icon from '@iconify/svelte';
+	import ok from '@iconify-icons/arcticons/ok';
+	import clear from '@iconify-icons/arcticons/clear';
+	import goodwyGallery from '@iconify-icons/arcticons/goodwy-gallery';
 
 	const skills = [
 		{
 			title: 'Claridad',
 			description: 'Ordena lo que piensas, entiende lo que sientes y decide con claridad',
-			icon: UserPlus
+			icon: clear
 		},
 		{
 			title: 'Bienestar Emocional',
 			description:
 				'Desarrolla herramientas para gestionar el estres, soltar lo que te pesa y recuperar tu paz.',
-			icon: Sprout
+			icon: ok
 		},
 		{
 			title: 'Proposito',
 			description:
 				'Reconecta con lo que realmente te importa y construye la vida que quieres vivir.',
-			icon: Goal
+			icon: goodwyGallery
 		}
 	];
 </script>
@@ -41,7 +44,7 @@
 			<div class="flex flex-col gap-2 rounded-md border-2 border-primary p-4 hover:bg-primary/10 hover:border-primary/50">
 				<div class="flex items-center gap-2">
 					<h3>{skill.title}</h3>
-					<skill.icon />
+					<Icon icon={skill.icon} class="w-6 h-6" />
 				</div>
 				<p>{skill.description}</p>
 			</div>
