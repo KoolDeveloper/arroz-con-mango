@@ -1,8 +1,28 @@
 <script lang="ts">
-	import { UserPlus, Sprout, Goal, QrCode } from '@lucide/svelte';
+	import { UserPlus, Sprout, Goal } from '@lucide/svelte';
+
+	const skills = [
+		{
+			title: 'Claridad',
+			description: 'Ordena lo que piensas, entiende lo que sientes y decide con claridad',
+			icon: UserPlus
+		},
+		{
+			title: 'Bienestar Emocional',
+			description:
+				'Desarrolla herramientas para gestionar el estres, soltar lo que te pesa y recuperar tu paz.',
+			icon: Sprout
+		},
+		{
+			title: 'Proposito',
+			description:
+				'Reconecta con lo que realmente te importa y construye la vida que quieres vivir.',
+			icon: Goal
+		}
+	];
 </script>
 
-<section>
+<section class="h-full w-full">
 	<div>
 		<h2>Conversaciones que abren nuevas posibilidades</h2>
 		<p>
@@ -16,37 +36,15 @@
 			tu bienestar y tu proposito
 		</p>
 	</div>
-	<div>
-		<div>
-			<UserPlus />
-			<div>
-				<h3>Claridad</h3>
-				<p>Ordena lo que piensas, entiende lo que sientes y decide con claridad</p>
+	<div class="grid grid-cols-2 gap-4 p-4">
+		{#each skills as skill (skill.title)}
+			<div class="flex flex-col gap-2 rounded-md border-2 border-primary p-4 hover:bg-primary/10 hover:border-primary/50">
+				<div class="flex items-center gap-2">
+					<h3>{skill.title}</h3>
+					<skill.icon />
+				</div>
+				<p>{skill.description}</p>
 			</div>
-		</div>
-		<div>
-			<Sprout />
-			<div class="text-4xl">
-				<h3 class="font-cursive">Bienestar Emocional</h3>
-				<p>
-					Desarrolla herramientas para gestionar el estres, soltar lo que te pesa y recuperar tu
-					paz.
-				</p>
-			</div>
-		</div>
-		<div>
-			<Goal />
-			<div>
-				<h3>Proposito</h3>
-				<p>Reconecta con lo que realmente te importa y construye la vida que quieres vivir.</p>
-			</div>
-		</div>
-	</div>
-	<div>
-		<QrCode />
-		<div>
-			<h3>Hablamos?</h3>
-			<p>Escanea el código QR para iniciar una conversación</p>
-		</div>
+		{/each}
 	</div>
 </section>

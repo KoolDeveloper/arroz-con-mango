@@ -36,6 +36,8 @@
 		"vite": "^8.0.16"
 	},
 	"dependencies": {
+		"@iconify-icons/arcticons": "^2.0.1",
+		"@iconify/svelte": "^5.2.2",
 		"@lucide/svelte": "^1.41.0"
 	}
 }
