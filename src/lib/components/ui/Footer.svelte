@@ -7,7 +7,7 @@ import youtube from '@iconify-icons/arcticons/youtube';
 
 </script>
 
-<footer class="col-start-1 col-span-32 row-start-18 row-span-1 border-2 border-primary bg-surface px-4 flex justify-between items-center text-sm">
+<footer class="col-start-1 col-span-32 row-start-18 row-span-1 px-4 flex justify-between items-center text-sm">
     <p>Desarrollado por Kooldeveloper.</p>
     <div class="flex gap-4">
         <a href="https://www.instagram.com/alejoelcoach/" target="_blank" rel="noopener noreferrer">

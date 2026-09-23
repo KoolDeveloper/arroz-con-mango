@@ -25,9 +25,9 @@
 	];
 </script>
 
-<section class="h-full w-full">
+<section class="h-full w-full p-4">
 	<div>
-		<h2>Conversaciones que abren nuevas posibilidades</h2>
+		<h2 class="font-title">Conversaciones que abren nuevas posibilidades</h2>
 		<p>
 			A veces no necesitas mas fuerza de voluntad, necesitas una conversacion que te permita ver lo
 			que hoy no estas viendo
@@ -41,9 +41,9 @@
 	</div>
 	<div class="grid grid-cols-2 gap-4 p-4">
 		{#each skills as skill (skill.title)}
-			<div class="flex flex-col gap-2 rounded-md border-2 border-primary p-4 hover:bg-primary/10 hover:border-primary/50">
+			<div class="flex flex-col gap-2 rounded-md p-4">
 				<div class="flex items-center gap-2">
-					<h3>{skill.title}</h3>
+					<h3 class="font-title">{skill.title}</h3>
 					<Icon icon={skill.icon} class="w-6 h-6" />
 				</div>
 				<p>{skill.description}</p>

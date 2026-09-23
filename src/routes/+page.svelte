@@ -5,15 +5,15 @@
 	import Footer from '$lib/components/ui/Footer.svelte';
 </script>
 
-<div>
+<div class="bg-linear-to-tl from-[#F58529] via-[#FF0000] to-[#F58529] text-xl">
 	<main class="grid h-screen w-screen grid-cols-32 grid-rows-18 overflow-hidden">
 		<section
-			class="col-span-8 col-start-2 row-span-10 flex flex-col items-center justify-center rounded-md"
+			class="col-span-8 col-start-2 row-span-17"
 		>
-			<img class="h-full w-full rounded-md border-2 border-primary" src="/banner.png" alt="" />
+			<img class="h-full w-full rounded-b-md" src="/banner.jpeg" alt="" />
 		</section>
 		<section
-			class="font-cursive col-span-14 col-start-11 row-span-3 rounded-b-md border-2 border-primary bg-surface px-4 py-2"
+			class="font-cursive col-span-14 col-start-11 row-span-3 rounded-b-md text-white px-4 py-2"
 		>
 			<div class="flex items-center gap-2">
 				<h3 class="font-title">Alejando Piña</h3>
@@ -25,7 +25,7 @@
 			</p>
 		</section>
 		<section
-			class="text-md col-span-21 col-start-11 row-span-12 row-start-5 rounded-md border-2 border-primary bg-surface p-2"
+			class="text-md col-span-21 col-start-11 row-span-12 row-start-5 rounded-md text-white p-2"
 		>
 			<CardGallery />
 		</section>
