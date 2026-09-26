@@ -9,7 +9,7 @@
 	--font-title: 'Rubik', sans-serif;
 	--color-background: #f8f5f0;
 	--color-surface: #ffffff;
-	--color-primary: #f02440;
+	--color-primary: #F58529;
 	--color-secondary: #d7e3e3;
 	--color-accent: #c7b299;
 	--color-text: #252525;
@@ -26,4 +26,5 @@ body {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	background-color: var(--color-background);
 }
