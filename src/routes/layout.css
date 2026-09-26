@@ -1,18 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner:wght@400..700&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
 @theme {
-	--font-main: 'Patrick Hand SC', cursive;
+	--font-main: 'Roboto', sans-serif;
+	--font-cursive: 'Patrick Hand SC', cursive;
 	--font-title: 'Rubik', sans-serif;
 	--color-background: #f8f5f0;
 	--color-surface: #ffffff;
-	--color-primary: #F58529;
-	--color-secondary: #d7e3e3;
-	--color-accent: #c7b299;
-	--color-text: #252525;
+	--color-primary: #f2762b;
+	--color-secondary: #84b745;
+	--color-accent: #ffac1f;
+	--color-text: #41342f;
 }
 
 :root {
@@ -27,4 +29,8 @@ body {
 	-ms-user-select: none;
 	user-select: none;
 	background-color: var(--color-background);
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--font-title);
 }

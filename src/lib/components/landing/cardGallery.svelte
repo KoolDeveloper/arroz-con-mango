@@ -26,25 +26,14 @@
 </script>
 
 <section class="h-full w-full p-4">
-	<div>
-		<h2 class="font-title">Conversaciones que abren nuevas posibilidades</h2>
-		<p>
-			A veces no necesitas mas fuerza de voluntad, necesitas una conversacion que te permita ver lo
-			que hoy no estas viendo
-		</p>
-	</div>
-	<div>
-		<p>
-			acompañamiento de coaching para que te conozcas, te entiendas y tomes decisiones alineadas con
-			tu bienestar y tu proposito
-		</p>
-	</div>
-	<div class="grid grid-cols-2 gap-4 p-4">
+	<div class="mt-6 grid gap-4 p-4 md:grid-cols-3">
 		{#each skills as skill (skill.title)}
-			<div class="flex flex-col gap-2 rounded-md p-4">
-				<div class="flex items-center gap-2">
-					<h3 class="font-title">{skill.title}</h3>
-					<Icon icon={skill.icon} class="w-6 h-6" />
+			<div
+				class="flex flex-col gap-2 rounded-md border-2 border-primary/50 p-4 transition-colors hover:bg-accent/10"
+			>
+				<div class="flex items-center justify-center gap-2">
+					<h3 class="text-center font-title">{skill.title}</h3>
+					<Icon icon={skill.icon} class="h-6 w-6" />
 				</div>
 				<p>{skill.description}</p>
 			</div>
