@@ -14,7 +14,7 @@
 
 			<p class="mb-8 text-xl text-gray-300 font-cursive">
 				No cambiamos cuando vemos las cosas diferentes, sino cuando nos damos cuenta de que el
-				observador que somos ya no puede sostener la realidad que nos tratamos de inculcar.
+				observador que somos ya no puede sostener la realidad que nos forzamos a vivir.
 			</p>
 
 			<a

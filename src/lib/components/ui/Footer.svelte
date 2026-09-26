@@ -8,7 +8,9 @@
 <footer
 	class="col-span-32 col-start-1 row-span-1 row-start-18 flex items-center justify-between px-4 pb-2 font-cursive text-sm"
 >
-	<p>Desarrollado por Kooldeveloper.</p>
+	<a href="https://github.com/KoolDeveloper" target="_blank" rel="noopener noreferrer">
+		Desarrollado por Kooldeveloper.
+	</a>
 	<div class="flex gap-4">
 		<a href="https://www.instagram.com/alejoelcoach/" target="_blank" rel="noopener noreferrer">
 			<div
