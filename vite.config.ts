@@ -14,9 +14,9 @@ export default defineConfig({
 			},
 			adapter: adapter()
 		})
-	]
-	/*server: {
+	],
+	server: {
 		host: true,
 		allowedHosts: ['.trycloudflare.com']
-	}*/
+	}
 });

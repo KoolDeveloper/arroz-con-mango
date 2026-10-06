@@ -52,7 +52,7 @@
 </script>
 
 <main
-	class="mx-auto mt-8 w-1/2 max-w-5xl rounded-lg border-4 border-primary/40 bg-white p-6 text-center shadow-lg"
+	class="mx-auto mt-10 w-1/2 max-w-5xl rounded-lg border-4 border-primary/40 bg-white p-6 text-center shadow-lg"
 >
 	<h1 class="mb-4 text-3xl font-bold">Agenda</h1>
 	<p class="mb-4">Selecciona una fecha:</p>
@@ -65,7 +65,7 @@
 	<p class="mb-4">Selecciona una franja horaria disponible para reservar:</p>
 	<section class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 		{#if franjasDisponibles.length === 0}
-			<p class="col-span-full text-center text-red-500">
+			<p class="col-span-full text-center text-primary">
 				No hay horarios disponibles para este tipo de cita.
 			</p>
 		{:else}
