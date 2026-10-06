@@ -66,7 +66,11 @@
 		<p class="mb-4">Selecciona una franja horaria disponible para reservar:</p>
 		<section class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 			{#if franjasDisponibles.length === 0}
+<<<<<<< HEAD:src/routes/agenda/+page.svelte
 				<p class="col-span-full text-center text-red-500">
+=======
+				<p class="col-span-full text-center text-primary">
+>>>>>>> 8c22f1befbf19532cf6ed886ada829f52e30c811:src/routes/aplicacion/agenda/+page.svelte
 					No hay horarios disponibles para este tipo de cita.
 				</p>
 			{:else}
