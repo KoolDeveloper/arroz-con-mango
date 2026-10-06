@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TipoCita } from '$lib/types/agenda';
+	import type { TipoCita, Franja } from '$lib/types/agenda';
 
 	let { data } = $props();
 
@@ -15,7 +15,7 @@
 	const franjasDelDia = $derived.by(() => {
 		if (!fechaSeleccionada) return [];
 
-		return data.franjas.filter((f) => f.date === fechaSeleccionada);
+		return data.franjas.filter((f: Franja) => f.date === fechaSeleccionada);
 	});
 
 	const franjasDisponibles = $derived.by(() => {
@@ -24,7 +24,7 @@
 		const horasNecesarias = DURACION[tipoCita];
 
 		if (horasNecesarias === 1) {
-			return franjas.filter((f) => f.available);
+			return franjas.filter((f: Franja) => f.available);
 		}
 
 		const resultado = [];
@@ -32,7 +32,7 @@
 		for (let i = 0; i <= franjas.length - horasNecesarias; i++) {
 			const grupo = franjas.slice(i, i + horasNecesarias);
 
-			const consecutivas = grupo.every((actual, idx) => {
+			const consecutivas = grupo.every((actual: Franja, idx: number) => {
 				if (!actual.available) return false;
 				if (idx === grupo.length - 1) return true;
 
@@ -66,11 +66,7 @@
 		<p class="mb-4">Selecciona una franja horaria disponible para reservar:</p>
 		<section class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 			{#if franjasDisponibles.length === 0}
-<<<<<<< HEAD:src/routes/agenda/+page.svelte
-				<p class="col-span-full text-center text-red-500">
-=======
 				<p class="col-span-full text-center text-primary">
->>>>>>> 8c22f1befbf19532cf6ed886ada829f52e30c811:src/routes/aplicacion/agenda/+page.svelte
 					No hay horarios disponibles para este tipo de cita.
 				</p>
 			{:else}
