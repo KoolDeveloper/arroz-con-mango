@@ -2,6 +2,8 @@
 
 Landing page para @Alejoelcoach
 
+gemini --resume 565d85b9-def6-4873-9ca5-397b40714f7b 
+
 
 SvelteKit
     ↓
