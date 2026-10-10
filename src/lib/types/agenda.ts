@@ -6,4 +6,4 @@ export type Franja = {
     available: boolean;
 };
 
-export type TipoCita = 'coaching' | 'mentoria';
+export type TipoCita = 'mentoria' | 'mentoriaG';

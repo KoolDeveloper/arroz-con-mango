@@ -4,7 +4,7 @@
 </script>
 
 
-<div class="h-screen w-screen">
+<div class="min-h-screen">
 	<Header />
 	{@render children()}
 </div>

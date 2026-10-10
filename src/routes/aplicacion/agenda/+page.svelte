@@ -3,13 +3,13 @@
 
 	let { data } = $props();
 
-	let tipoCita = $state<TipoCita>('coaching');
+	let tipoCita = $state<TipoCita>('mentoria');
 
 	let fechaSeleccionada = $state<string>('');
 
 	const DURACION = {
-		coaching: 1,
-		mentoria: 2
+		mentoria: 1,
+		mentoriaG: 2
 	};
 
 	const franjasDelDia = $derived.by(() => {
@@ -52,7 +52,7 @@
 </script>
 
 <main
-	class="mx-auto mt-8 w-1/2 max-w-5xl rounded-lg border-4 border-primary/40 bg-white p-6 text-center shadow-lg"
+	class="mx-auto mt-8 w-[90vw] md:w-1/2 max-w-5xl rounded-lg border-4 border-primary/40 bg-white p-6 text-center shadow-lg"
 >
 	<h1 class="mb-4 text-3xl font-bold">Agenda</h1>
 	<p class="mb-4">Selecciona una fecha:</p>
@@ -60,8 +60,8 @@
 	{#if fechaSeleccionada}
 		<p class="mb-4">Selecciona que tipo de cita:</p>
 		<select bind:value={tipoCita}>
-			<option value="coaching">Coaching</option>
-			<option value="mentoria">Mentoría Grupal</option>
+			<option value="mentoria">Mentoria 1 a 1</option>
+			<option value="mentoriaG">Mentoría Grupal</option>
 		</select>
 		<p class="mb-4">Selecciona una franja horaria disponible para reservar:</p>
 		<section class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
