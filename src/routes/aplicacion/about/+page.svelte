@@ -1,21 +1,22 @@
 <script>
+	import AgendaBtn from '$lib/components/ui/AgendaBtn.svelte';
 	import Footer from '$lib/components/ui/Footer.svelte';
 </script>
 
 <section
-	class="mx-auto my-8 w-[90vw] rounded-lg border-4 border-primary/40 bg-white p-6 md:p-12  text-xl shadow-lg text-justify"
+	class="mx-auto mb-4 border-b-4 border-primary/40 bg-white p-6 text-justify text-xl shadow-lg md:my-8 md:w-[90vw] md:rounded-lg md:border-4 md:p-12"
 >
-	<div class="flex items-center justify-center gap-2">
-		<h3 class="font-title text-5xl font-bold capitalize text-primary">Fragmentos ludopatas</h3>
-
+	<div class="flex items-center justify-center">
+		<h3 class="font-title text-5xl font-bold text-primary capitalize">Fragmentos ludopatas</h3>
 	</div>
-	<div class="mt-4 flex flex-col gap-4 text-md font-main">
-		<h2 class="text-xl font-semibold uppercase text-center text-secondary">¿Como se honra una adiccion?</h2>
+	<div class="text-md mt-8 flex flex-col gap-8 font-main">
+		<h2 class="text-center text-xl font-bold uppercase">¿Cómo se honra una adicción?</h2>
 
 		<p>
-			Como se lleva una vida sin los recuerdos vivos, como hacemos para construir futuro cuando en
-			las manos solo tenemos pedazos de nuestra propia historia. Frases, anectodas, llantos, noches
-			terribes, victorias, derrotas, altas y bajas, dolores mezclados con pena y mucha tristeza.
+			¿Cómo se lleva una vida sin los recuerdos vivos?, ¿cómo hacemos para construir futuro cuando
+			en las manos solo tenemos pedazos de nuestra propia historia?. Frases, anectodas, llantos,
+			noches terribes, victorias, derrotas, altas y bajas, dolores mezclados con pena y mucha
+			tristeza.
 		</p>
 
 		<p>
@@ -59,14 +60,14 @@
 			dentro de una realidad alterada solo cava y cava su propia tumba.
 		</p>
 
-		<h2 class="text-xl font-semibold mt-4">DOS PROFUNDOS AÑOS DE RECUPERACION...</h2>
+		<h2 class="mt-4 text-xl font-semibold">DOS PROFUNDOS AÑOS DE RECUPERACION...</h2>
 
 		<p>
 			Donde aprendi a verme, a evaluar los daños, mi alma, los miles de momentos, abrir la caja de
 			secretos, y despues hacer de todo esto algo sostenible, desde donde? desde encontrar las
 			carencias, el origen del dolor, esa heridas que pudieron haberme empujado a ese lugar, y en
-			una siguiente etapa, el cambio de habitos saludables, aqui entra mi pasion por la bicicleta,
-			3 mil kilometros que me respaldan en estos dos años, infinitos caminos, rutas en solitario,
+			una siguiente etapa, el cambio de habitos saludables, aqui entra mi pasion por la bicicleta, 3
+			mil kilometros que me respaldan en estos dos años, infinitos caminos, rutas en solitario,
 			limpiando a traves del sudor, tantos pensamientos intrusivos, mostrando nuevos mapas a mi
 			mente, dentro del bienestar y la sanacion real.
 		</p>
@@ -88,7 +89,11 @@
 			y de observacion para finalmente poder desmontar habitos nocivos y esas practicas que solo te hacian
 			recaer.
 		</p>
-        <quote class="mt-8 text-center font-bold text-2xl uppercase font-title">"Una nueva vida sin duda es posible."</quote>
+		<quote class="mt-8 text-center font-title text-2xl font-bold uppercase"
+			>"Una nueva vida sin duda es posible."</quote
+		>
+
+		<div class="flex items-center justify-center"><AgendaBtn /></div>
 	</div>
 </section>
 <Footer />

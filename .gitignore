@@ -1,5 +1,9 @@
 node_modules
 
+# Dev
+.dev
+.dev.*
+
 # Output
 .output
 .vercel

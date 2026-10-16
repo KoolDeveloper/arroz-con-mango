@@ -8,7 +8,7 @@
 
 <main class="overflow-x-hidden">
 	<Banner />
-	<section class="mt-2 grid gap-4 px-4 py-2 text-center font-cursive text-xl">
+	<section class="mt-10 grid gap-6 px-6 py-2 text-center font-cursive text-xl">
 		<div class="flex justify-center items-center gap-2">
 			<h3 class="font-title text-2xl">Alejandro Piña</h3>
 			<Icon icon={mymountsinai} class="h-12 w-12 text-primary" />
