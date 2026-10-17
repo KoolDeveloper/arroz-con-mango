@@ -8,7 +8,7 @@ export type CitaDB = typeof citas.$inferSelect;
 
 // 2. Enums y literales
 export type EstadoCita = 'pendiente' | 'confirmada' | 'cancelada' | 'finalizada';
-export type EstadoPago = 'pendiente' | 'aprobado' | 'cancelado' | 'reembolsado';
+export type EstadoPago = 'pendiente' | 'aprobado' | 'cancelado' | 'reembolsado' | 'rechazado';
 
 // 3. Tipos extendidos para el Frontend
 
