@@ -1,50 +1,51 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import type { EstadoCita, EstadoPago } from '$lib/types/agenda';
 
 export const pacientes = sqliteTable('pacientes', {
-    id: integer('id').primaryKey(),
-    nombre: text('nombre').notNull(),
-    email: text('email').notNull(),
-    telefono: text('telefono').notNull()
-});
-
-export const citas = sqliteTable('citas', {
-	id: integer('id').primaryKey(),
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	nombre: text('nombre').notNull(),
 	email: text('email').notNull(),
-	fecha: text('fecha').notNull(),
-	hora: text('hora').notNull(),
-	estado: text('estado').notNull()
+	telefono: text('telefono').notNull()
 });
 
 export const pagos = sqliteTable('pagos', {
-    id: integer('id').primaryKey(),
-    cita_id: integer('cita_id').notNull(),
-    mercado_pago_id: text('mercado_pago_id').notNull(),
-    amount: integer('amount').notNull(),
-    status: text('status').notNull()
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	cita_id: text('cita_id').notNull(),
+	mercado_pago_id: text('mercado_pago_id').notNull(),
+	amount: integer('amount').notNull(),
+	status: text('status').notNull()
 });
 
-/*users
-├─ id
-├─ email
-├─ role
+export const citas = sqliteTable('citas', {
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	pacienteId: text('paciente_id').notNull(),
+	pagoId: text('pago_id'),
 
-patients
-├─ id
-├─ full_name
-├─ email
-├─ phone
+	estadoCita: text('estado_cita').$type<EstadoCita>().notNull().default('pendiente'),
+	estadoPago: text('estado_pago').$type<EstadoPago>().notNull().default('pendiente'),
 
-appointments
-├─ id
-├─ patient_id
-├─ starts_at
-├─ ends_at
-├─ status
+	tipoCitaId: text('tipo_cita_id').notNull(),
+	notasCliente: text('notas_cliente'),
+	creadoEn: integer('creado_en', { mode: 'timestamp' }).notNull()
+});
 
-payments
-├─ id
-├─ appointment_id
-├─ mercado_pago_id
-├─ amount
-├─ status*/
+export const franjas = sqliteTable('franjas', {
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	date: text('date').notNull(),
+	startTime: text('startTime').notNull(),
+	endTime: text('endTime').notNull(),
+	available: integer('available', { mode: 'boolean' }).notNull().default(true),
+
+	// Aquí está la clave: Varias franjas pueden apuntar a la misma cita
+	citaId: text('cita_id') // Es null si la franja está disponible
+});
+
+export type FranjaInsert = typeof franjas.$inferInsert;

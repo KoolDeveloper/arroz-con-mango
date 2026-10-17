@@ -1,4 +1,8 @@
+name = "tu-app-agenda"
+compatibility_date = "2024-03-20"
+
 [[d1_databases]]
 binding = "therapist_db"
 database_name = "therapist-db"
 database_id = "b76aa53d-c76c-44d7-8dab-c3100251f754"
+migrations_dir = "drizzle"
