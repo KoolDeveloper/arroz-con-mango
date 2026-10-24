@@ -1,6 +1,5 @@
 <script>
 	import AgendaBtn from '$lib/components/ui/AgendaBtn.svelte';
-	//href="https://wa.me/573028023341"
 </script>
 
 <section>

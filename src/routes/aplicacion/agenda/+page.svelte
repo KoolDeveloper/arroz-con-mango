@@ -195,9 +195,10 @@
 								type="tel"
 								name="telefono"
 								required
-								pattern="[0-9+\s-]{7,15}"
-								title="Ingresa un número de teléfono válido (mínimo 7 dígitos)"
-								placeholder="Ej. 3001234567"
+								minlength="10"
+								maxlength="15"
+								title="Ingresa un número de teléfono válido (mínimo 10 dígitos)"
+								placeholder="Ej. +573001234567"
 								class="mt-1 w-full rounded border bg-white p-2"
 							/>
 						</div>

@@ -45,7 +45,7 @@ export const actions = {
 		const telefono = formData.get('telefono')?.toString()?.trim();
 		const notasCliente = formData.get('notasCliente')?.toString()?.trim() || null;
 
-		const telefonoRegex = /^[0-9+\s-]{7,15}$/;
+		const telefonoRegex = /^\+?[0-9\s-]{7,15}$/;
 		if (!telefono || !telefonoRegex.test(telefono)) {
 			return fail(400, { error: 'Por favor ingresa un número de teléfono válido.' });
 		}
@@ -153,9 +153,9 @@ export const actions = {
 					payer: { name: nombre, email: email },
 					external_reference: nuevaCitaId,
 					back_urls: {
-						success: `${baseUrl}/aplicacion/agenda?pago=exito`,
-						failure: `${baseUrl}/aplicacion/agenda?pago=error`,
-						pending: `${baseUrl}/aplicacion/agenda?pago=pendiente`
+						success: `${baseUrl}/aplicacion/agenda/success`,
+						failure: `${baseUrl}/aplicacion/agenda/failure`,
+						pending: `${baseUrl}/aplicacion/agenda/pending`
 					},
 					auto_return: 'approved',
 					notification_url: `${baseUrl}/api/webhooks/mercadopago`,
