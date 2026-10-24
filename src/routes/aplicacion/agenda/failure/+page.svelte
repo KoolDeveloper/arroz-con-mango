@@ -1,3 +1,7 @@
+<script>
+import { resolve } from '$app/paths';
+</script>
+
 <div class="mx-auto max-w-2xl p-8 text-center">
 	<h1 class="mb-4 text-4xl font-bold text-red-600">
 		❌ Pago no completado
@@ -8,7 +12,7 @@
 	</p>
 
 	<a
-		href="/aplicacion/agenda"
+		href={resolve('/aplicacion/agenda')}
 		class="mt-6 inline-block rounded bg-primary px-4 py-2 text-white"
 	>
 		Intentar nuevamente
