@@ -1,15 +1,12 @@
 <script>
-import { resolve } from '$app/paths';
+	import { resolve } from '$app/paths';
+	import StatusDial from '$lib/components/ui/StatusDial.svelte';
 </script>
 
-<div class="mx-auto max-w-2xl p-8 text-center">
-	<h1 class="mb-4 text-4xl font-bold text-red-600">
-		❌ Pago no completado
-	</h1>
+<StatusDial>
+	<h1 class="mb-4 text-4xl font-bold text-red-600">❌ Pago no completado</h1>
 
-	<p class="text-lg">
-		La transacción fue cancelada o rechazada.
-	</p>
+	<p class="text-lg">La transacción fue cancelada o rechazada.</p>
 
 	<a
 		href={resolve('/aplicacion/agenda')}
@@ -17,4 +14,4 @@ import { resolve } from '$app/paths';
 	>
 		Intentar nuevamente
 	</a>
-</div>
+</StatusDial>
