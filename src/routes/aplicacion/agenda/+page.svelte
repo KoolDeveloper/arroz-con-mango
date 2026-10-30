@@ -174,7 +174,7 @@
 					<input type="hidden" name="tipoCitaId" value={servicioActual.id} />
 
 					<div class="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-						<div>
+						<div class="col-span-2">
 							<label for="nombre" class="block text-sm font-medium text-gray-700"
 								>Nombre completo *</label
 							>
@@ -182,9 +182,31 @@
 								id="nombre"
 								type="text"
 								name="nombre"
+								title="Ingresa tu nombre completo"
+								placeholder="Ej. Juan Pérez"
 								required
 								class="mt-1 w-full rounded border bg-white p-2"
 							/>
+						</div>
+						<div class="flex-col self-center content-center gap-2">
+							<label for="indicativo" class="block text-sm font-medium text-gray-700"
+								>Indicativo</label
+							>
+							<select
+								aria-label="Indicativo de país"
+								title="Selecciona el indicativo de tu país"
+								name="indicativo" 
+								class="w-28 rounded border bg-white p-2 text-sm"
+							>
+								<option value="+57">🇨🇴 +57</option>
+								<option value="+1">🇺🇸 +1</option>
+								<option value="+34">🇪🇸 +34</option>
+								<option value="+51">🇵🇪 +51</option>
+								<option value="+52">🇲🇽 +52</option>
+								<option value="+54">🇦🇷 +54</option>
+								<option value="+56">🇨🇱 +56</option>
+								<option value="+593">🇪🇨 +593</option>
+							</select>
 						</div>
 						<div>
 							<label for="telefono" class="block text-sm font-medium text-gray-700"
@@ -195,10 +217,10 @@
 								type="tel"
 								name="telefono"
 								required
-								minlength="10"
+								minlength="7"
 								maxlength="15"
-								title="Ingresa un número de teléfono válido (mínimo 10 dígitos)"
-								placeholder="Ej. +573001234567"
+								title="Ingresa un número de teléfono válido (mínimo 7 dígitos)"
+								placeholder="Ej. 3001234567"
 								class="mt-1 w-full rounded border bg-white p-2"
 							/>
 						</div>
@@ -212,6 +234,8 @@
 							id="email"
 							type="email"
 							name="email"
+							title="Ingresa un correo electrónico válido"
+							placeholder="Ej. joseelmago@dominio.com"
 							required
 							class="mt-1 w-full rounded border bg-white p-2"
 						/>
@@ -224,6 +248,8 @@
 						<textarea
 							id="notasCliente"
 							name="notasCliente"
+							title="Hay algo que debamos saber antes de tu cita?"
+							placeholder="Ej. Prefiero que la sesión sea borracho (khe?)."
 							rows="2"
 							class="mt-1 w-full rounded border bg-white p-2"></textarea>
 					</div>

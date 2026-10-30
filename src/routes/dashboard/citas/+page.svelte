@@ -175,7 +175,7 @@
 		<table class="w-full text-left text-sm">
 			<thead class="bg-gray-100 text-gray-600">
 				<tr>
-					<th class="p-3">Paciente</th>
+					<th class="p-3">Cliente</th>
 					<th class="p-3">Servicio</th>
 					<th class="p-3">Estado Cita</th>
 					<th class="p-3">Estado Pago</th>

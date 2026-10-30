@@ -26,7 +26,7 @@
 </script>
 
 <section class="h-full w-full p-4">
-	<div class="grid gap-4 px-4 md:grid-cols-3">
+	<div class="grid gap-4 px-6 md:grid-cols-3">
 		{#each skills as skill (skill.title)}
 			<div
 				class="flex flex-col gap-2 rounded-md border-2 border-primary/50 p-4 transition-colors hover:bg-accent/10"
@@ -35,7 +35,7 @@
 					<h3 class="text-center font-title">{skill.title}</h3>
 					<Icon icon={skill.icon} class="h-6 w-6" />
 				</div>
-				<p>{skill.description}</p>
+				<p class="text-justify">{skill.description}</p>
 			</div>
 		{/each}
 	</div>

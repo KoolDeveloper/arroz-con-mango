@@ -42,7 +42,9 @@ export const actions = {
 		const tipoCitaId = formData.get('tipoCitaId')?.toString();
 		const nombre = formData.get('nombre')?.toString()?.trim();
 		const email = formData.get('email')?.toString()?.trim().toLowerCase();
-		const telefono = formData.get('telefono')?.toString()?.trim();
+		const indicativo = formData.get('indicativo')?.toString()?.trim() || '+57';
+		const numLocal = formData.get('telefono')?.toString()?.trim();
+		const telefono = indicativo + numLocal;
 		const notasCliente = formData.get('notasCliente')?.toString()?.trim() || null;
 
 		const telefonoRegex = /^\+?[0-9\s-]{7,15}$/;

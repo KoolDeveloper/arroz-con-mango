@@ -30,7 +30,7 @@
 		href={resolve('/dashboard/citas')}
 		class="rounded-lg bg-white p-6 shadow transition hover:shadow-md"
 	>
-		<h3 class="text-sm font-medium text-gray-500">Pacientes →</h3>
+		<h3 class="text-sm font-medium text-gray-500">Clientes →</h3>
 		<p class="mt-2 text-3xl font-bold text-primary">{metricas.totalPacientes}</p>
 	</a>
 
@@ -54,7 +54,7 @@
 		<table class="w-full text-left text-sm">
 			<thead class="bg-gray-100 text-gray-600">
 				<tr>
-					<th class="p-3">ID Paciente</th>
+					<th class="p-3">ID Cliente</th>
 					<th class="p-3">Estado</th>
 					<th class="p-3">Pago</th>
 				</tr>

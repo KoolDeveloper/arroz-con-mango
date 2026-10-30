@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
-	import mymountsinai from '@iconify-icons/arcticons/mymountsinai';
+	import { resolve } from '$app/paths';
 	import CardGallery from '$lib/components/landing/cardGallery.svelte';
 	import Banner from '$lib/components/landing/banner.svelte';
 	import Footer from '$lib/components/ui/Footer.svelte';
@@ -8,28 +7,30 @@
 
 <main class="overflow-x-hidden">
 	<Banner />
-	<section class="mt-10 grid gap-6 px-6 py-2 text-center font-cursive text-xl">
-		<div class="flex justify-center items-center gap-2">
-			<h3 class="font-title text-2xl">Alejandro Piña</h3>
-			<Icon icon={mymountsinai} class="h-12 w-12 text-primary" />
-		</div>
-		<p>
-			Creo en el poder de las conversaciones honestas para transformar vidas. He vivido en carne
-			propia que siempre hay una salida y por eso hoy acompaño a otros a encontrar la suya.
+	<section class="mt-20 grid gap-6 px-6 py-2 text-center text-xl">
+		<a href={resolve('/aplicacion/about')}>
+			<h3 class="font-main text-4xl font-bold text-primary">Alejandro Piña</h3>
+		</a>
+		<p class="text-justify text-2xl/8 text-black">
+			Durante mucho tiempo podemos vivir en automático, repetir historias, cargar emociones y tomar
+			decisiones sin preguntarnos realmente por qué hacemos lo que hacemos. Yo también he tenido que
+			cuestionarme, enfrentar mis propias contradicciones y descubrir que cambiar no consiste
+			solamente en querer algo diferente.
 		</p>
-
-		<h2 class="text-xl">Conversaciones que abren nuevas posibilidades</h2>
-		<p>
-			"A veces no necesitas mas fuerza de voluntad, necesitas una conversacion que te permita ver lo
-			que hoy no estas viendo"
+		<p class="text-justify text-2xl/8 text-black">
+			Hoy quiero poner mi experiencia y mis herramientas al servicio de otras personas. Quizás no
+			necesitas otra respuesta. Necesitas empezar a hacerte otras preguntas. Un espacio de
+			conversación y acompañamiento para explorar lo que estás viviendo, cuestionar aquello que das
+			por sentado y descubrir posibilidades que hoy quizás no estás viendo.
 		</p>
-
-		<p class="font-main">
-			Acompañamiento de coaching para que te conozcas, te entiendas y tomes decisiones alineadas con
-			tu bienestar y tu proposito
+		<p class="text-justify text-2xl/8 text-black">
+			Mirarte de frente Reconoce los patrones, las creencias y las historias que influyen en tu
+			manera de vivir. Hacerte cargo Comprende tus emociones, cuestiona tus respuestas habituales y
+			recupera tu capacidad de elegir. Construir algo diferente Lleva tus reflexiones a la vida
+			cotidiana y comienza a crear cambios que tengan sentido para ti.
 		</p>
 	</section>
-	<section class="text-md p-2">
+	<section class="p-2 text-2xl">
 		<CardGallery />
 	</section>
 
