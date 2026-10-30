@@ -17,7 +17,7 @@
 			icon: ok
 		},
 		{
-			title: 'Proposito',
+			title: 'Propósito',
 			description:
 				'Reconecta con lo que realmente te importa y construye la vida que quieres vivir.',
 			icon: goodwyGallery

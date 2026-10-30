@@ -18,7 +18,7 @@
 	class="relative flex h-20 items-center justify-between border-b-2 border-primary bg-black px-6 py-4 text-white"
 >
 	<a href={resolve('/')} aria-label="Inicio"
-		><img class="h-12 w-16" src={asset('/logotipo.png')} alt="Logo Arroz Con Mango" /></a
+		><img class="h-30 w-30" src={asset('/logotipo.png')} alt="Logo Arroz Con Mango" /></a
 	>
 	<p class="text-center text-xl font-bold">{title}</p>
 	<button class="md:hidden" onclick={() => (isHidden = !isHidden)}>
