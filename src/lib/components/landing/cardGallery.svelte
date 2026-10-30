@@ -31,9 +31,9 @@
 			<div
 				class="flex flex-col gap-2 rounded-md border-2 border-primary/50 p-4 transition-colors hover:bg-accent/10"
 			>
-				<div class="flex items-center justify-center gap-2">
+				<div class="flex items-center justify-center gap-2 font-bold">
 					<h3 class="text-center font-title">{skill.title}</h3>
-					<Icon icon={skill.icon} class="h-6 w-6" />
+					<Icon icon={skill.icon} class="h-8 w-8" />
 				</div>
 				<p class="text-justify">{skill.description}</p>
 			</div>

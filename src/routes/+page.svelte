@@ -30,8 +30,13 @@
 			cotidiana y comienza a crear cambios que tengan sentido para ti.
 		</p>
 	</section>
-	<section class="p-2 text-2xl">
+	<section class="mt-8 p-2 text-2xl">
 		<CardGallery />
+	</section>
+
+	<section class='mt-8 flex flex-col justify-center items-center gap-4'>
+		<h3 class="text-lg font-bold uppercase">Visita mi podcast</h3>
+		<a href={resolve('/aplicacion/podcast')} title="Visita mi podcast"><img src="/Arroz.png" alt="Logo Podcast" width='180' height="90"/></a>
 	</section>
 
 	<Footer />

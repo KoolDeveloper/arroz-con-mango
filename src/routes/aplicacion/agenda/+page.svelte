@@ -249,7 +249,6 @@
 							id="notasCliente"
 							name="notasCliente"
 							title="Hay algo que debamos saber antes de tu cita?"
-							placeholder="Ej. Prefiero que la sesión sea borracho (khe?)."
 							rows="2"
 							class="mt-1 w-full rounded border bg-white p-2"></textarea>
 					</div>
