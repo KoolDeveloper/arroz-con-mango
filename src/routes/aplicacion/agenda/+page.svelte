@@ -188,7 +188,7 @@
 								class="mt-1 w-full rounded border bg-white p-2"
 							/>
 						</div>
-						<div class="flex-col self-center content-center gap-2">
+						<div class="flex-col self-center content-center gap-2 col-span-2 md:col-span-1">
 							<label for="indicativo" class="block text-sm font-medium text-gray-700"
 								>Indicativo</label
 							>

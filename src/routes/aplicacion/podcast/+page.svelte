@@ -2,8 +2,6 @@
 	import Icon from '@iconify/svelte';
 	import Spotify from '@iconify-icons/arcticons/spotify-alt-1';
 	import Youtube from '@iconify-icons/arcticons/youtube';
-
-	import { resolve } from '$app/paths';
 </script>
 
 <main
@@ -18,13 +16,13 @@
 			<a
 				href="https://open.spotify.com/show/0f733gwYrbEgqvovhYSTpz?si=3MgLrwFuT1yFyVnvEW7BzA&utm_source=native-share-menu"
 				target="_blank"
-				rel="noopener noreferrer"><Icon icon={Spotify} class="h-16 w-16" /></a
+				rel="noopener noreferrer"><Icon icon={Spotify} class="h-16 w-16 rounded-full bg-[#1db954] hover:bg-[#1ed760] text-white" /></a
 			>
             <p>Spotify</p>
 		</div>
 		<div>
-			<a href="https://www.youtube.com/@alejopinapena" target="_blank" rel="noopener noreferrer">
-				<Icon icon={Youtube} class="h-16 w-16" />
+			<a href="https://www.youtube.com/@alejopinapena" target="_blank" rel="noopener noreferrer" class="">
+				<Icon icon={Youtube} class="h-16 w-16 bg-[#cc181e] rounded-full p-2 text-white hover:bg-[#ef1f1f]" />
 			</a>
             <p>Youtube</p>
 		</div>

@@ -20,7 +20,7 @@
 			</div>
 		</a>
 		<a href="https://www.youtube.com/@alejopinapena" target="_blank" rel="noopener noreferrer">
-			<div class="inline-flex rounded-full bg-red-600 p-1 text-white hover:brightness-200">
+			<div class="inline-flex rounded-full bg-[#cc181e] p-1 text-white hover:brightness-200">
 				<Icon icon={youtube} class="h-6 w-6" />
 			</div>
 		</a>
