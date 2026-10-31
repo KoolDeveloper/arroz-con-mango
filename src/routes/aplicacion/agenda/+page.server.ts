@@ -1,34 +1,55 @@
 import { drizzle } from 'drizzle-orm/d1';
-import { eq, and, or, isNull, lt, inArray, asc } from 'drizzle-orm';
+import { eq, and, or, isNull, lt, gt, inArray, asc } from 'drizzle-orm';
 import { franjas, tiposCita, pacientes, citas } from '$lib/server/db/schema';
 import { fail, redirect } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 
 export const load = async ({ platform }) => {
-	const d1 = platform?.env?.therapist_db;
-	if (!d1) throw new Error('Base de datos no conectada');
+    const d1 = platform?.env?.therapist_db;
+    if (!d1) throw new Error('Base de datos no conectada');
 
-	const db = drizzle(d1);
-	const ahora = Date.now();
+    const db = drizzle(d1);
+    const ahora = Date.now();
 
-	const [franjasDisponibles, serviciosActivos] = await Promise.all([
-		db
-			.select()
-			.from(franjas)
-			.where(
-				and(
-					eq(franjas.available, true),
-					or(isNull(franjas.lockedUntil), lt(franjas.lockedUntil, ahora))
-				)
-			)
-			.orderBy(asc(franjas.date), asc(franjas.startTime)),
-		db.select().from(tiposCita).where(eq(tiposCita.activo, true))
-	]);
+    // Obtener la fecha actual ('YYYY-MM-DD') en la zona horaria local (Colombia)
+    const fechaActualStr = new Intl.DateTimeFormat('en-CA', { 
+        timeZone: 'America/Bogota' 
+    }).format(new Date());
 
-	return {
-		franjas: franjasDisponibles,
-		tiposCita: serviciosActivos
-	};
+    // Obtener la hora actual ('HH:mm') en la zona horaria local (Colombia)
+    const horaActualStr = new Intl.DateTimeFormat('en-GB', { 
+        timeZone: 'America/Bogota', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: false 
+    }).format(new Date());
+
+    const [franjasDisponibles, serviciosActivos] = await Promise.all([
+        db
+            .select()
+            .from(franjas)
+            .where(
+                and(
+                    eq(franjas.available, true),
+                    or(isNull(franjas.lockedUntil), lt(franjas.lockedUntil, ahora)),
+                    // Filtro de tiempo: Fechas futuras o el día de hoy con hora posterior a la actual
+                    or(
+                        gt(franjas.date, fechaActualStr),
+                        and(
+                            eq(franjas.date, fechaActualStr),
+                            gt(franjas.startTime, horaActualStr)
+                        )
+                    )
+                )
+            )
+            .orderBy(asc(franjas.date), asc(franjas.startTime)),
+        db.select().from(tiposCita).where(eq(tiposCita.activo, true))
+    ]);
+
+    return {
+        franjas: franjasDisponibles,
+        tiposCita: serviciosActivos
+    };
 };
 
 export const actions = {

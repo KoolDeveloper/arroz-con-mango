@@ -1,0 +1,25 @@
+export async function GET() {
+	const siteUrl = 'https://alejopina.com';
+	const paginas = ['', '/aplicacion/agenda', '/aplicacion/about', '/aplicacion/podcast']; // Agrega aquí tus rutas públicas
+
+	const sitemap = `<?xml version="1.0" encoding="UTF-8" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	${paginas
+		.map(
+			(ruta) => `
+	<url>
+		<loc>${siteUrl}${ruta}</loc>
+		<changefreq>weekly</changefreq>
+		<priority>${ruta === '' ? '1.0' : '0.8'}</priority>
+	</url>`
+		)
+		.join('')}
+</urlset>`.trim();
+
+	return new Response(sitemap, {
+		headers: {
+			'Content-Type': 'application/xml',
+			'Cache-Control': 'max-age=0, s-maxage=3600'
+		}
+	});
+}

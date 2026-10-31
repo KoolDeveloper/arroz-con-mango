@@ -1,4 +1,5 @@
-name = "arroz-con-mango"
+name = "crimson-mud-c9cb"
+account_id = "3947b7e6c1117a33973e9032b7c6848c"
 compatibility_date = "2024-03-20"
 
 main = ".svelte-kit/cloudflare/_worker.js"
@@ -7,7 +8,7 @@ assets_binding = "ASSETS"
 [[d1_databases]]
 binding = "therapist_db"
 database_name = "therapist-db"
-database_id = "b76aa53d-c76c-44d7-8dab-c3100251f754"
+database_id = "78aed73c-b5f8-4fd3-92f7-03d7da022d33"
 migrations_dir = "drizzle"
 
 [assets]
