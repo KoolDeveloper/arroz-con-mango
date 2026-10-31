@@ -2,6 +2,7 @@
 	import { resolve } from '$app/paths';
 	import CardGallery from '$lib/components/landing/cardGallery.svelte';
 	import Banner from '$lib/components/landing/banner.svelte';
+	import AgendaBtn from '$lib/components/ui/AgendaBtn.svelte';
 	import Footer from '$lib/components/ui/Footer.svelte';
 </script>
 
@@ -30,13 +31,19 @@
 			cotidiana y comienza a crear cambios que tengan sentido para ti.
 		</p>
 	</section>
-	<section class="mt-8 p-2 text-2xl">
+	<section class="mt-8">
 		<CardGallery />
 	</section>
 
-	<section class='my-8 flex flex-col justify-center items-center gap-4'>
+	<section class='mt-8 flex justify-center'>
+		<AgendaBtn />
+	</section>
+
+	<section class="my-8 flex flex-col items-center justify-center gap-4">
 		<h3 class="text-lg font-bold uppercase">Visita mi podcast</h3>
-		<a href={resolve('/aplicacion/podcast')} title="Visita mi podcast"><img src="/Arroz.png" alt="Logo Podcast" width='180' height="90"/></a>
+		<a href={resolve('/aplicacion/podcast')} title="Visita mi podcast"
+			><img src="/Arroz.png" alt="Logo Podcast" width="180" height="90" /></a
+		>
 	</section>
 
 	<Footer />

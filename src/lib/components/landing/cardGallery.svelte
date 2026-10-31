@@ -25,16 +25,14 @@
 	];
 </script>
 
-<section class="h-full w-full p-4">
+<section class="h-full w-full text-2xl">
 	<div class="grid gap-4 px-6 md:grid-cols-3">
 		{#each skills as skill (skill.title)}
 			<div
 				class="flex flex-col gap-2 rounded-md border-2 border-primary/50 p-4 transition-colors hover:bg-accent/10"
 			>
-				<div class="flex items-center justify-center gap-2 font-bold">
-					<h3 class="text-center font-title">{skill.title}</h3>
-					<Icon icon={skill.icon} class="h-8 w-8" />
-				</div>
+				<Icon icon={skill.icon} class="h-10 w-10 self-center" />
+				<h3 class="text-center font-title font-bold">{skill.title}</h3>
 				<p class="text-justify">{skill.description}</p>
 			</div>
 		{/each}
