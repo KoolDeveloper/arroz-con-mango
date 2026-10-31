@@ -1,9 +1,15 @@
 name = "crimson-mud-c9cb"
 account_id = "3947b7e6c1117a33973e9032b7c6848c"
 compatibility_date = "2024-03-20"
+workers_dev = true
+preview_urls = true
 
 main = ".svelte-kit/cloudflare/_worker.js"
 assets_binding = "ASSETS"
+
+routes = [
+  { pattern = "alejopina.com", custom_domain = true, zone_name = "alejopina.com", enabled = true, previews_enabled = false }
+]
 
 [[d1_databases]]
 binding = "therapist_db"
