@@ -7,7 +7,7 @@
 	class="mx-auto mb-4 border-b-4 border-primary/40 bg-white p-6 text-justify text-xl shadow-lg md:my-8 md:w-[90vw] md:rounded-lg md:border-4 md:p-12"
 >
 	<div class="flex items-center justify-center">
-		<h3 class="font-title text-5xl font-bold text-primary capitalize">Fragmentos ludopatas</h3>
+		<h3 class="font-title text-5xl font-bold text-primary capitalize">Fragmentos ludópatas</h3>
 	</div>
 	<div class="text-md mt-8 flex flex-col gap-8 font-main">
 		<h2 class="text-center text-xl font-bold uppercase">¿Cómo se honra una adicción?</h2>

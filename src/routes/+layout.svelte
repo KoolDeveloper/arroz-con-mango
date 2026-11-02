@@ -7,15 +7,15 @@
 
 	const siteUrl = 'https://alejopina.com';
 	const canonicalUrl = $derived(`${siteUrl}${page.url.pathname}`);
-	const title = 'Alejo Coach - Libérate | Coaching de Bienestar y Propósito';
+	const title = 'Alejo Mentor - Libérate | Mentoria de Bienestar y Propósito';
 	const description =
-		'Acompañamiento de coaching personalizado para que te conozcas, te entiendas y tomes decisiones alineadas con tu bienestar y tu propósito. Agenda tu sesión online.';
+		'Acompañamiento de mentoria personalizado para que te conozcas, te entiendas y tomes decisiones alineadas con tu bienestar y tu propósito. Agenda tu sesión online.';
 	const ogImage = `${siteUrl}/og-image.jpg`;
 
 	const jsonLdScript = `<script type="application/ld+json">${JSON.stringify({
 		'@context': 'https://schema.org',
 		'@type': 'ProfessionalService',
-		name: 'Alejo Coach - Libérate',
+		name: 'Alejo Mentor - Libérate',
 		description: description,
 		url: siteUrl,
 		image: ogImage,
@@ -31,10 +31,10 @@
 	<!-- SEO Básico -->
 	<title>{title}</title>
 	<meta name="description" content={description} />
-	<meta name="author" content="Alejo Coach" />
+	<meta name="author" content="Alejo Mentor" />
 	<meta
 		name="keywords"
-		content="coaching personal, bienestar, propósito de vida, sesiones de coaching, desarrollo personal, mentoría 1 a 1, Alejo Coach"
+		content="mentoria personal, bienestar, propósito de vida, sesiones de mentoria, desarrollo personal, mentoría 1 a 1, Alejo Mentor"
 	/>
 
 	<!-- Control de indexación: No indexar el dashboard ni las pantallas de retorno de pago -->
@@ -53,7 +53,7 @@
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 	<meta property="og:locale" content="es_CO" />
-	<meta property="og:site_name" content="Alejo Coach" />
+	<meta property="og:site_name" content="Alejo Mentor" />
 
 	<!-- Twitter / X Cards -->
 	<meta name="twitter:card" content="summary_large_image" />

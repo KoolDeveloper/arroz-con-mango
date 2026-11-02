@@ -6,10 +6,11 @@
 	const TITLES: Record<string, string> = {
 		'/': 'Inicio',
 		'/aplicacion/agenda': 'Agenda',
-		'/aplicacion/about': 'Sobre Mi'
+		'/aplicacion/about': 'Sobre Mi',
+		'/aplicacion/podcast': 'Podcast'
 	};
 
-	const title = $derived(TITLES[page.url.pathname] || 'Alejo Coach');
+	const title = $derived(TITLES[page.url.pathname] || 'Alejo Mentor');
 
 	let isHidden = $state(true);
 </script>
@@ -35,7 +36,10 @@
 				<a onclick={() => (isHidden = !isHidden)} href={resolve('/aplicacion/agenda')}>Agenda</a>
 			</li>
 			<li class="hover:text-primary hover:underline">
-				<a onclick={() => (isHidden = !isHidden)} href={resolve('/aplicacion/about')}>Sobre Mi</a>
+				<a onclick={() => (isHidden = !isHidden)} href={resolve('/aplicacion/about')}>Sobre Mí</a>
+			</li>
+			<li class="hover:text-primary hover:underline">
+				<a onclick={() => (isHidden = !isHidden)} href={resolve('/aplicacion/podcast')}>Podcast</a>
 			</li>
 		</ul>
 	</nav>

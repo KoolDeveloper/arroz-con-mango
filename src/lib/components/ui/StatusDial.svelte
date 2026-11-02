@@ -6,12 +6,11 @@
 	const { children } = $props();
 </script>
 
-<div class="mx-auto max-w-2xl p-8 text-center">
-
+<div class="my-8 mx-auto max-w-2xl p-8 text-center bg-background border-2 border-[#f6c4a4]">
 	{@render children()}
 
 	<section class="mt-6 grid items-center justify-center gap-4 rounded-lg border p-4 text-left">
-		<h2>¿Tienes alguna pregunta?</h2>
+		<h2 class="text-xl font-bold text-center">¿Tienes alguna pregunta?</h2>
 		<p>Si tienes alguna pregunta sobre tu cita o el pago, no dudes en ponerte en contacto:</p>
 		<div class="flex items-center justify-center">
 			<a
