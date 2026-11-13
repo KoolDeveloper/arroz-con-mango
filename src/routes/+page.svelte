@@ -3,6 +3,7 @@
 	import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 	import Shuffle from '$lib/components/ui/Shuffle.svelte';
 	import { appState } from '$lib/stores/appState.svelte';
+	import Prisma from '$lib/components/ui/Prisma.svelte';
 
 	gsap.registerPlugin(ScrollTrigger);
 	let mainEl: HTMLElement;
@@ -63,12 +64,10 @@
 				if (profileImage) {
 					gsap.fromTo(
 						profileImage,
-						{ scale: 1, y: 0, x: 0, opacity: 1 },
+						{ scaleY: 0.3, scaleX: 0.5, y: 0, x: 0, opacity: 1 },
 						{
-							scaleY: 0.3,
-							scaleX: 0.5,
-							y: -180,
-							opacity: 0,
+							scale: 1,
+							opacity: 0.1,
 							duration: 1.5,
 							ease: 'none',
 							scrollTrigger: {
@@ -135,8 +134,8 @@
 			id="profile-image"
 			src="profile.jpeg"
 			alt="Profile"
-			class="absolute h-full w-full object-cover opacity-30"
+			class="absolute h-full w-full object-cover object-[25%_40%] opacity-0"
 		/>
 	</section>
-	<section class="h-screen snap-start snap-always">Third</section>
+	<section class="h-screen snap-start snap-always"><Prisma height={70} /></section>
 </main>
