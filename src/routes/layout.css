@@ -1,14 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner:wght@400..700&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand+SC&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&display=swap');
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
 @theme {
-	--font-main: 'Libre Baskerville', sans-serif;
+	--font-main: 'Manrope', system-ui, sans-serif;
 	--font-cursive: 'Patrick Hand SC', cursive;
-	--font-title: 'Rubik', sans-serif;
+	--font-title: 'Instrument Serif', Georgia, serif;
 	--color-background: #111;
 	--color-surface: #ffffff;
 	--color-primary: #f2762b;
@@ -20,6 +19,7 @@
 :root {
 	margin: 0;
 	padding: 0;
+	box-sizing: border-box;
 	font-family: var(--font-main);
 	color: var(--color-text);
 }

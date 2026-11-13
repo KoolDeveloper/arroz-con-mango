@@ -1,122 +1,142 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import gsap from 'gsap';
 	import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 	import Shuffle from '$lib/components/ui/Shuffle.svelte';
 	import { appState } from '$lib/stores/appState.svelte';
 
 	gsap.registerPlugin(ScrollTrigger);
+	let mainEl: HTMLElement;
 
 	$effect(() => {
-		// Si la pantalla de carga inicial YA TERMINÓ (!appState.isInitialLoading)...
-		if (!appState.isInitialLoading) {
-			// 1. Refrescamos ScrollTrigger por si acaso hay elementos largos
+		if (!appState.isInitialLoading && mainEl) {
+			const ctx = gsap.context(() => {
+				const bannerLogo = document.getElementById('banner-logo');
+				const bannerImage = document.getElementById('banner-image');
+				const bannerTitle = document.getElementById('banner-title');
+				const profileImage = document.getElementById('profile-image');
+				const bannerText = document.getElementById('banner-text');
+
+				if (bannerLogo) {
+					gsap.fromTo(bannerLogo, { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: 2 });
+				}
+
+				if (bannerImage) {
+					gsap.fromTo(
+						bannerImage,
+						{ opacity: 0, scale: 1.25 },
+						{
+							opacity: 0.2,
+							scale: 1,
+							duration: 2
+						}
+					);
+				}
+
+				if (bannerTitle) {
+					gsap.fromTo(
+						bannerTitle,
+						{ color: 'white', opacity: 0, y: -100 },
+						{
+							color: '#cd973a',
+							opacity: 1,
+							y: 0,
+							duration: 3,
+							delay: 0.5,
+							ease: 'power3.out'
+						}
+					);
+				}
+				if (bannerText) {
+					gsap.fromTo(
+						bannerText,
+						{ opacity: 0, y: 50 },
+						{
+							opacity: 1,
+							y: 0,
+							duration: 3,
+							delay: 0.5,
+							ease: 'power3.out'
+						}
+					);
+				}
+
+				if (profileImage) {
+					gsap.fromTo(
+						profileImage,
+						{ scale: 1, y: 0, x: 0, opacity: 1 },
+						{
+							scaleY: 0.3,
+							scaleX: 0.5,
+							y: -180,
+							opacity: 0,
+							duration: 1.5,
+							ease: 'none',
+							scrollTrigger: {
+								trigger: profileImage.parentElement,
+								scroller: mainEl,
+								start: 'top bottom',
+								end: 'top top',
+								scrub: true
+							}
+						}
+					);
+				}
+			}, mainEl);
+
 			ScrollTrigger.refresh();
 
-			// 2. ¡Lanzamos las animaciones de bienvenida de tu página!
-			const bannerLogo = document.getElementById('banner-logo');
-			const bannerImage = document.getElementById('banner-image');
-			const bannerTitle = document.getElementById('banner-title');
-			const profileImage = document.getElementById('profile-image');
-
-			if (bannerLogo) {
-				// Animación normal del logo al cargar la página
-				gsap.fromTo(bannerLogo, { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: 2 });
-			}
-
-			if (bannerImage) {
-				// Animación vinculada al scroll
-				gsap.fromTo(
-					bannerImage,
-					{ opacity: 0, y: 50 },
-					{
-						opacity: 1,
-						y: 0,
-						duration: 2,
-						yoyo: true,
-						scrollTrigger: {
-							trigger: bannerImage, // Elemento que activa la animación
-							start: 'top 30%', // Empieza cuando el top del banner-image llega al 80% de la pantalla
-							end: 'top 30%', // (Opcional) Dónde termina el rango de vinculación
-							toggleActions: 'play none none none' // Qué hacer al entrar/salir (play, pause, resume, reverse)
-							// markers: true      // Descomenta esto temporalmente para ver las líneas guía visuales
-						}
-					}
-				);
-			}
-
-			if (bannerTitle) {
-				gsap.fromTo(
-					bannerTitle,
-					{ color: 'white', opacity: 0, y: -100 },
-					{
-						color: '#cd973a',
-						opacity: 1,
-						y: 0,
-						duration: 3,
-						delay: 0.5,
-						yoyo: true,
-						ease: 'bounce'
-					}
-				);
-			}
-
-			if (profileImage) {
-				gsap.fromTo(
-					profileImage,
-					{ scale: 1, y: 0, opacity: 1 },
-
-					{
-						scale: 0.4,
-						y: -240,
-						opacity: 0,
-						duration: 3,
-						scrollTrigger: {
-							trigger: profileImage,
-							start: 'top 30%',
-							end: 'top 20%',
-							scrub: true
-						}
-					}
-				);
-			}
+			return () => ctx.revert();
 		}
 	});
-
-	onMount(() => {});
 </script>
 
-<main class="overflow-x-hidden">
-	<section class="relative h-screen">
+<main
+	bind:this={mainEl}
+	class="h-screen snap-y snap-mandatory overflow-x-hidden overflow-y-scroll scroll-smooth"
+>
+	<section class="relative h-screen snap-start snap-always">
 		<picture>
 			<img
 				id="banner-logo"
 				src="logotipo.png"
 				alt="Logo"
-				class="fixed left-1/2 h-40 w-40 -translate-x-1/2 object-cover"
+				class="fixed left-1/2 h-40 w-40 -translate-x-1/2 object-cover opacity-0 md:left-0 md:translate-x-0"
 			/>
-			<img id="bannerImage" src="banner.jpg" alt="Banner" class="h-full w-full object-cover opacity-30" />
+			<img
+				id="banner-image"
+				src="banner.jpg"
+				alt="Banner"
+				class="h-full w-full object-cover opacity-0"
+			/>
 		</picture>
 		<div
-			class="absolute top-0 left-1/2 w-auto max-w-187.5 -translate-x-1/2 translate-y-[25vh] text-center"
+			class="absolute top-0 left-1/2 grid w-8/10 max-w-187.5 -translate-x-1/2 translate-y-[20vh] gap-4 text-white md:left-0 md:ml-10
+				   md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
 		>
-			<h1 id="banner-title" class="text-justify font-bold text-white">
-				<Shuffle
-					text="Liberate de la ludopatia"
-					style="font-size: 52px;"
-					loop={true}
-					loopDelay={3}
-				/>
+			<Shuffle
+				text="Mentor  -  Bienestar  -  Propósito"
+				style="font-size: 20px; font-family: var(--font-title); width: 100%; text-align: justify; color: #a1f1c0;"
+				duration={0.4}
+				loop={true}
+				loopDelay={3}
+			/>
+			<h1 id="banner-title" class="text-justify font-title text-5xl font-bold uppercase opacity-0">
+				Vuelve a elegir <span class="animate-pulse text-accent duration-200">tu vida</span>
 			</h1>
+
+			<p id="banner-text" class="text-justify text-xl font-bold text-gray-300 opacity-0">
+				Acompaño a personas a recuperar su paz, ordernar sus emociones y reconstruir su camino hacia
+				una vida más plena desde la experiencia.
+			</p>
 		</div>
 	</section>
-	<section class="relative h-screen">
+	<section class="relative h-screen snap-start snap-always">
 		<img
 			id="profile-image"
 			src="profile.jpeg"
 			alt="Profile"
-			class="absolute h-full w-full object-cover"
+			class="absolute h-full w-full object-cover opacity-30"
 		/>
 	</section>
-	<section class="h-screen">Third</section>
+	<section class="h-screen snap-start snap-always">Third</section>
 </main>

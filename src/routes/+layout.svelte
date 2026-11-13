@@ -1,40 +1,55 @@
 <script lang="ts">
-    import './layout.css';
-    import favicon from '$lib/assets/favicon.ico';
-    import { onMount } from 'svelte';
-    import { appState } from '$lib/stores/appState.svelte';
-    import { gsap } from 'gsap';
+	import './layout.css';
+	import favicon from '$lib/assets/favicon.ico';
+	import { onMount } from 'svelte';
+	import { appState } from '$lib/stores/appState.svelte';
+	import { gsap } from 'gsap';
 
-    let { children } = $props();
-    let loaderElement: HTMLElement;
-    
-    // Estados internos para la carga visual de la imagen
-    let imageLoaded = $state(false);
+	let { children } = $props();
+	let loaderElement: HTMLElement;
+	let imageLoaded = $state(false);
 
-    onMount(() => {
-        // 1. Precargamos la imagen pesada en segundo plano antes de dejar ir el loader
-        const img = new Image();
-        img.src = '/modal.jpg'; // Ruta de tu imagen
-        
-        img.onload = () => {
-            imageLoaded = true; // La imagen ya está en caché del navegador
-            
-            // Damos un pequeño respiro estético y disparamos la salida
-            const tl = gsap.timeline({
-                onComplete: () => {
-                    appState.finishLoading();
-                }
-            });
+	onMount(() => {
+		const startTime = Date.now();
+		const minDisplayTime = 1500; // Tiempo mínimo visible en ms (1.5 segundos)
 
-            tl.to(loaderElement, {
-                opacity: 0,
-                scale: 1.05,
-                duration: 0.8,
-                ease: 'power2.inOut'
-            });
-        };
-    });
+		const finishLoaderAnimation = () => {
+			imageLoaded = true;
+
+			// Calculamos cuánto tiempo ha pasado desde que abrió la web
+			const elapsed = Date.now() - startTime;
+			// Si cargó muy rápido, esperamos lo que falte para completar los 1.5s
+			const remainingTime = Math.max(0, minDisplayTime - elapsed);
+
+			setTimeout(() => {
+				if (!loaderElement) return;
+
+				gsap.to(loaderElement, {
+					opacity: 0,
+					scale: 1.05,
+					duration: 0.8,
+					ease: 'power2.inOut',
+					onComplete: () => {
+						appState.finishLoading();
+					}
+				});
+			}, remainingTime);
+		};
+
+		const img = new Image();
+		img.src = '/modal.jpg';
+
+		// Si ya está en caché del navegador, disparamos de una vez
+		if (img.complete) {
+			finishLoaderAnimation();
+		} else {
+			img.onload = finishLoaderAnimation;
+			// Fallback por si la imagen falla al cargar, para no bloquear la web
+			img.onerror = finishLoaderAnimation;
+		}
+	});
 </script>
+
 
 <svelte:head>
     <link rel="icon" href={favicon} />
