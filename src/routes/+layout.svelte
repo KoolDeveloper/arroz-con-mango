@@ -7,10 +7,10 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<title>Alejo Coach - Liberate</title>
+	<title>Alejo Mentor - Liberate</title>
 	<meta
 		name="description"
-		content="Acompañamiento de coaching para que te conozcas, te entiendas y tomes decisiones alineadas con tu bienestar y tu proposito"
+		content="Acompañamiento de mentoria para que te conozcas, te entiendas y tomes decisiones alineadas con tu bienestar y tu proposito"
 	/>
 </svelte:head>
 

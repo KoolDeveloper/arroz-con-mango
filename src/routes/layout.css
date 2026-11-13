@@ -9,7 +9,7 @@
 	--font-main: 'Libre Baskerville', sans-serif;
 	--font-cursive: 'Patrick Hand SC', cursive;
 	--font-title: 'Rubik', sans-serif;
-	--color-background: #f8f5f0;
+	--color-background: #111;
 	--color-surface: #ffffff;
 	--color-primary: #f2762b;
 	--color-secondary: #84b745;
@@ -23,14 +23,32 @@
 	font-family: var(--font-main);
 	color: var(--color-text);
 }
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+	display: none;
+}
+
+html {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
 body {
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
 	user-select: none;
 	background-color: var(--color-background);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	font-family: var(--font-title);
 }

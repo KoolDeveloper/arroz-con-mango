@@ -1,50 +1,100 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
-	import CardGallery from '$lib/components/landing/cardGallery.svelte';
-	import Banner from '$lib/components/landing/banner.svelte';
-	import AgendaBtn from '$lib/components/ui/AgendaBtn.svelte';
-	import Footer from '$lib/components/ui/Footer.svelte';
-</script>
+	import { onMount } from 'svelte';
+	import gsap from 'gsap';
+	import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+	import Shuffle from '$lib/components/ui/Shuffle.svelte';
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	onMount(() => {
+		const bannerLogo = document.getElementById('banner-logo');
+		const bannerImage = document.getElementById('banner-image');
+		const bannerTitle = document.getElementById('banner-title');
+		const profileImage = document.getElementById('profile-image');
+
+		if (bannerLogo) {
+			// Animación normal del logo al cargar la página
+			gsap.fromTo(bannerLogo, { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: 2 });
+		}
+
+		if (bannerImage) {
+			// Animación vinculada al scroll
+			gsap.fromTo(
+				bannerImage,
+				{ opacity: 0, y: 50 },
+				{
+					opacity: 1,
+					y: 0,
+					duration: 2,
+					yoyo: true,
+					scrollTrigger: {
+						trigger: bannerImage, // Elemento que activa la animación
+						start: 'top 30%', // Empieza cuando el top del banner-image llega al 80% de la pantalla
+						end: 'top 30%', // (Opcional) Dónde termina el rango de vinculación
+						toggleActions: 'play none none none' // Qué hacer al entrar/salir (play, pause, resume, reverse)
+						// markers: true      // Descomenta esto temporalmente para ver las líneas guía visuales
+					}
+				}
+			);
+		}
+
+		if (bannerTitle) {
+			gsap.fromTo(
+				bannerTitle,
+				{ color: 'white', opacity: 0, y:-100 },
+				{
+					color: '#cd973a',
+					opacity: 1,
+					y: 0,
+					duration: 3,
+					delay: 0.5,
+					yoyo: true,
+					ease: 'bounce'
+				}
+			);
+		}
+
+		if (profileImage){
+			gsap.fromTo(
+				profileImage,
+				{ scale: 1 , y: 0, opacity: 1},
+		
+				{
+					scale:0.4,
+					y:-240,
+					opacity: 0,
+					duration: 3,
+					scrollTrigger: {
+						trigger: profileImage,
+						start: 'top 30%',
+						end: 'top 20%',
+						scrub: true
+					}
+				}
+			);
+		}
+	});
+</script> 
 
 <main class="overflow-x-hidden">
-	<Banner />
-	<section class="mt-20 grid gap-6 px-6 py-2 text-center text-xl">
-		<a href={resolve('/aplicacion/about')}>
-			<h3 class="font-main text-4xl font-bold text-primary">Alejandro Piña</h3>
-		</a>
-		<p class="text-justify text-2xl/8 text-black">
-			Durante mucho tiempo podemos vivir en automático, repetir historias, cargar emociones y tomar
-			decisiones sin preguntarnos realmente por qué hacemos lo que hacemos. Yo también he tenido que
-			cuestionarme, enfrentar mis propias contradicciones y descubrir que cambiar no consiste
-			solamente en querer algo diferente.
-		</p>
-		<p class="text-justify text-2xl/8 text-black">
-			Hoy quiero poner mi experiencia y mis herramientas al servicio de otras personas. Quizás no
-			necesitas otra respuesta. Necesitas empezar a hacerte otras preguntas. Un espacio de
-			conversación y acompañamiento para explorar lo que estás viviendo, cuestionar aquello que das
-			por sentado y descubrir posibilidades que hoy quizás no estás viendo.
-		</p>
-		<p class="text-justify text-2xl/8 text-black">
-			Mirarte de frente Reconoce los patrones, las creencias y las historias que influyen en tu
-			manera de vivir. Hacerte cargo Comprende tus emociones, cuestiona tus respuestas habituales y
-			recupera tu capacidad de elegir. Construir algo diferente Lleva tus reflexiones a la vida
-			cotidiana y comienza a crear cambios que tengan sentido para ti.
-		</p>
+	<section class="relative h-screen">
+		<picture>
+			<img
+				id="banner-logo"
+				src="logotipo.png"
+				alt="Logo"
+				class="fixed left-1/2 h-40 w-40 -translate-x-1/2 object-cover"
+			/>
+			<img id="bannerImage" src="banner.jpg" alt="Banner" class="h-full w-full object-cover" />
+		</picture>
+		<div class="absolute top-0 w-auto max-w-187.5 left-1/2 -translate-x-1/2 translate-y-[25vh] text-center">
+			<h1 id="banner-title" class="text-justify font-bold text-white">
+				<Shuffle text="Liberate de la ludopatia"  style='font-size: 52px;' loop={true} loopDelay={3} />
+			</h1>
+		</div>
 	</section>
-	<section class="mt-8">
-		<CardGallery />
+	<section class="h-screen relative">
+		<img id="profile-image" src="profile.jpeg" alt="Profile" class="absolute h-full w-full object-cover" />
 	</section>
-
-	<section class='mt-8 flex justify-center'>
-		<AgendaBtn />
-	</section>
-
-	<section class="my-8 flex flex-col items-center justify-center gap-4">
-		<h3 class="text-lg font-bold uppercase">Visita mi podcast</h3>
-		<a href={resolve('/aplicacion/podcast')} title="Visita mi podcast"
-			><img src="/Arroz.png" alt="Logo Podcast" width="180" height="90" /></a
-		>
-	</section>
-
-	<Footer />
+	<section class="h-screen">Third</section>
 </main>
