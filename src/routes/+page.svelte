@@ -4,6 +4,8 @@
 	import Shuffle from '$lib/components/ui/Shuffle.svelte';
 	import { appState } from '$lib/stores/appState.svelte';
 	import Prisma from '$lib/components/ui/Prisma.svelte';
+	import Icon from '@iconify/svelte';
+	import DownArrow from '@iconify-icons/arcticons/arc-launcher';
 
 	gsap.registerPlugin(ScrollTrigger);
 	let mainEl: HTMLElement;
@@ -231,6 +233,14 @@
 			</div>
 		</div>
 	</div>
+	{#if currentSectionIndex < 2}
+		<div
+			class="fixed bottom-2 left-1/2 flex -translate-x-1/2 animate-bounce flex-col items-center text-xs text-primary uppercase"
+		>
+			Siguiente
+			<Icon icon={DownArrow} class=" h-5 w-5 rotate-180" />
+		</div>
+	{/if}
 	<section class="relative h-screen snap-start snap-always">
 		<picture>
 			<img
@@ -252,6 +262,7 @@
 		>
 			<Shuffle
 				text="Mentor  -  Bienestar  -  Propósito"
+				active={currentSectionIndex === 0}
 				style="font-size: 20px; font-family: var(--font-title); width: 100%; text-align: justify; color: #a1f1c0;"
 				duration={0.4}
 				loop={true}
@@ -268,7 +279,7 @@
 		</div>
 		<div
 			id="banner-buttons"
-			class="absolute bottom-[18vh] left-1/2 grid w-8/10 -translate-x-1/2 items-center justify-center gap-4 text-white opacity-0 md:left-0 md:ml-10 md:flex md:w-auto md:translate-x-0"
+			class="absolute bottom-[10vh] left-1/2 grid w-8/10 -translate-x-1/2 items-center justify-center gap-4 text-white opacity-0 md:bottom-[18vh] md:left-0 md:ml-10 md:flex md:w-auto md:translate-x-0"
 		>
 			<button
 				onclick={() => goToSection('agenda', 2)}
@@ -282,16 +293,45 @@
 			>
 		</div>
 	</section>
-	<section id="profile" class="relative h-screen snap-start snap-always">
+	<section id="profile" class="relative h-screen snap-start snap-always overflow-hidden">
 		<img
 			id="profile-image"
 			src="profile.jpeg"
 			alt="Profile"
-			class="absolute h-full w-full object-cover object-[25%_40%] opacity-0"
+			class="absolute -z-1 h-full w-full object-cover object-[25%_40%] opacity-0"
 		/>
+
+		<div
+			class="absolute top-0 left-1/2 grid w-8/10 max-w-187.5 -translate-x-1/2 translate-y-[20vh] gap-4 text-white md:left-0 md:ml-10
+				   md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
+		>
+			<Shuffle
+				text="Sobre Mi"
+				active={currentSectionIndex === 1}
+				style="font-size: 20px; font-family: var(--font-title); width: 100%; text-align: justify; color: #a1f1c0;"
+				duration={0.4}
+				loop={true}
+				loopDelay={3}
+			/>
+			<h2 class="text-justify text-4xl text-white uppercase">
+				Mirarte de frente,hacerte cargo,<span class="text-accent">construir algo diferente</span>.
+			</h2>
+			<p>
+				Soy Alejandro Piña. Te ayudo a reconocer los patrones,las creencias y las historias que
+				influyen en tu manera de vivir.
+			</p>
+			<p>
+				Juntos comprendemos tus emociones, cuestionamostus respuestas habituales y llevamos tus
+				reflexionesa cambios que tengan sentido para ti.
+			</p>
+			<p>
+				Viví la ludopatía en carne propia y salí adelante.Hoy acompaño a quienes quieren dejar el
+				juegoy reconstruir su vida emocional y financiera.
+			</p>
+		</div>
 	</section>
 	<section id="agenda" class="relative h-screen snap-start snap-always">
-		<div class="absolute top-1/2 h-1/2 w-full -translate-y-1/2">
+		<div class="absolute top-1/2 -z-10 h-1/2 w-full -translate-y-1/2 opacity-30">
 			<Prisma height={5} baseWidth={10} scale={1} />
 		</div>
 	</section>
