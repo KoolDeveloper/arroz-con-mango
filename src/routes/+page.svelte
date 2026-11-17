@@ -347,7 +347,7 @@
 				id="banner-logo"
 				src="logotipo.png"
 				alt="Logo"
-				class="fixed left-1/2 h-32 w-32 md:h-40 md:w-40 -translate-x-1/2 object-cover opacity-0 md:left-0 md:translate-x-0"
+				class="fixed left-1/2 h-32 w-32 -translate-x-1/2 object-cover opacity-0 md:left-0 md:h-40 md:w-40 md:translate-x-0"
 			/>
 			<img
 				id="banner-image"
@@ -417,16 +417,22 @@
 				Mirarte de frente,hacerte cargo,<span class="text-accent">construir algo diferente</span>.
 			</h2>
 			<p>
-				Soy Alejandro Piña. Te ayudo a reconocer los patrones,las creencias y las historias que
-				influyen en tu manera de vivir.
+				Durante mucho tiempo podemos vivir en automático, repetir historias, cargar emociones y
+				tomar decisiones sin preguntarnos realmente por qué hacemos lo que hacemos. Yo también he
+				tenido que cuestionarme, enfrentar mis propias contradicciones y descubrir que cambiar no
+				consiste solamente en querer algo diferente.
 			</p>
 			<p>
-				Juntos comprendemos tus emociones, cuestionamostus respuestas habituales y llevamos tus
-				reflexionesa cambios que tengan sentido para ti.
+				Hoy quiero poner mi experiencia y mis herramientas al servicio de otras personas. Quizás no
+				necesitas otra respuesta. Necesitas empezar a hacerte otras preguntas. Un espacio de
+				conversación y acompañamiento para explorar lo que estás viviendo, cuestionar aquello que
+				das por sentado y descubrir posibilidades que hoy quizás no estás viendo.
 			</p>
 			<p>
-				Viví la ludopatía en carne propia y salí adelante.Hoy acompaño a quienes quieren dejar el
-				juegoy reconstruir su vida emocional y financiera.
+				Mirarte de frente Reconoce los patrones, las creencias y las historias que influyen en tu
+				manera de vivir. Hacerte cargo Comprende tus emociones, cuestiona tus respuestas habituales
+				y recupera tu capacidad de elegir. Construir algo diferente Lleva tus reflexiones a la vida
+				cotidiana y comienza a crear cambios que tengan sentido para ti.
 			</p>
 		</div>
 	</section>
