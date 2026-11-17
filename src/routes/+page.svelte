@@ -347,7 +347,7 @@
 				id="banner-logo"
 				src="logotipo.png"
 				alt="Logo"
-				class="fixed left-1/2 h-40 w-40 -translate-x-1/2 object-cover opacity-0 md:left-0 md:translate-x-0"
+				class="fixed left-1/2 h-32 w-32 md:h-40 md:w-40 -translate-x-1/2 object-cover opacity-0 md:left-0 md:translate-x-0"
 			/>
 			<img
 				id="banner-image"
@@ -357,7 +357,7 @@
 			/>
 		</picture>
 		<div
-			class="absolute top-0 left-1/2 grid w-8/10 max-w-187.5 -translate-x-1/2 translate-y-[20vh] gap-4 text-white md:left-0 md:ml-10
+			class="absolute top-0 left-1/2 grid w-8/10 max-w-187.5 -translate-x-1/2 translate-y-[18vh] gap-4 text-white md:left-0 md:ml-10
 				   md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
 		>
 			<Shuffle
