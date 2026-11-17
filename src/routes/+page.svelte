@@ -6,6 +6,7 @@
 	import Prisma from '$lib/components/ui/Prisma.svelte';
 	import Icon from '@iconify/svelte';
 	import DownArrow from '@iconify-icons/arcticons/arc-launcher';
+	import Cross from '@iconify-icons/arcticons/cross';
 	import { enhance } from '$app/forms';
 
 	let { data, form } = $props();
@@ -23,6 +24,9 @@
 	gsap.registerPlugin(ScrollTrigger);
 	let mainEl: HTMLElement;
 	let transitionOverlay: HTMLElement;
+	let form1El: HTMLDivElement;
+	let form2El: HTMLDivElement;
+	let currentForm = $state(1);
 
 	let currentSectionIndex = $state(0);
 	let isTransitioning = false;
@@ -156,6 +160,31 @@
 			return () => ctx.revert();
 		}
 	});
+
+	$effect(() => {
+		const shouldShowForm2 = bloqueSeleccionado && servicioActual;
+		const target = shouldShowForm2 ? 2 : 1;
+		if (target !== currentForm) {
+			animateSwitch(target);
+			currentForm = target;
+		}
+	});
+
+	function animateSwitch(target: 1 | 2) {
+		const leaving = target === 1 ? form2El : form1El;
+		const entering = target === 1 ? form1El : form2El;
+
+		if (!leaving || !entering) return;
+
+		const tl = gsap.timeline({ defaults: { duration: 0.35, ease: 'power3.inOut' } });
+
+		// Salida
+		tl.to(leaving, { opacity: 0, y: 20, pointerEvents: 'none' }, 0);
+
+		// Entrada (overlap ligero)
+		tl.set(entering, { display: 'block', opacity: 0, y: -20 });
+		tl.to(entering, { opacity: 1, y: 0, pointerEvents: 'auto' }, 0.1);
+	}
 	// Función unificada de transición con la cortina
 	const playCurtain = (direction: 'down' | 'up', onMidpoint?: () => void) => {
 		if (isTransitioning) return;
@@ -406,6 +435,7 @@
 			<Prisma height={5} baseWidth={10} scale={1} />
 		</div>
 		<div
+			bind:this={form1El}
 			class="absolute top-[18vh] left-1/2 w-[90vw] max-w-3xl -translate-x-1/2 text-center text-white"
 		>
 			<h1 class="mb-4 text-3xl font-bold text-accent uppercase">Agenda tu Sesión</h1>
@@ -465,7 +495,7 @@
 				{#if fechaSeleccionada}
 					<div class="mb-6 text-left">
 						<p class="mb-3 font-semibold">3. Horarios disponibles para el {fechaSeleccionada}:</p>
-						<section class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+						<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
 							{#if franjasDisponibles.length === 0}
 								<p class="col-span-full text-center text-primary">
 									No hay bloques consecutivos suficientes ({servicioActual?.duracionFranjas}h) para
@@ -476,7 +506,10 @@
 									{@const seleccionado = bloqueSeleccionado?.ids.join('-') === bloque.ids.join('-')}
 									<button
 										type="button"
-										onclick={() => (bloqueSeleccionado = bloque)}
+										onclick={() => {
+											bloqueSeleccionado = bloque;
+											animateSwitch(2);
+										}}
 										class="w-full rounded-lg border-2 p-3 text-center font-medium transition-colors
 								{seleccionado
 											? 'border-primary bg-primary text-white'
@@ -486,17 +519,20 @@
 									</button>
 								{/each}
 							{/if}
-						</section>
+						</div>
 					</div>
-
-					<!-- PASO 4: FORMULARIO DE DATOS Y PAGO -->
 				{/if}
 			{/if}
 		</div>
-	</section>
-	<section>
-		<div>
-			{#if bloqueSeleccionado && servicioActual}
+		{#if bloqueSeleccionado && servicioActual}
+			<div
+				bind:this={form2El}
+				class="absolute top-[18vh] left-1/2 w-[90vw] max-w-3xl -translate-x-1/2 text-center text-white"
+			>
+				<button onclick={() => animateSwitch(1)} class="mx-auto flex gap-2 p-4"
+					>Cancelar <span class="rotate-45 text-xl text-red-500"><Icon icon={Cross} /></span
+					></button
+				>
 				<form
 					method="POST"
 					action="?/reservar"
@@ -507,10 +543,10 @@
 							enviando = false;
 						};
 					}}
-					class="mt-8 rounded-lg border-2 border-primary/30 bg-gray-50 p-6 text-left shadow-inner"
+					class=""
 				>
-					<h2 class="mb-4 text-center text-xl font-bold text-gray-800">
-						4. Tus datos para confirmar y pagar
+					<h2 class="mb-4 text-center text-xl font-bold">
+						Confirma tu datos para agendar {servicioActual.nombre} el {fechaSeleccionada} a las {bloqueSeleccionado.startTime}
 					</h2>
 
 					<input type="hidden" name="franjasIds" value={JSON.stringify(bloqueSeleccionado.ids)} />
@@ -518,9 +554,7 @@
 
 					<div class="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div class="col-span-2">
-							<label for="nombre" class="block text-sm font-medium text-gray-700"
-								>Nombre completo *</label
-							>
+							<label for="nombre" class="block text-sm font-medium">Nombre completo *</label>
 							<input
 								id="nombre"
 								type="text"
@@ -528,18 +562,16 @@
 								title="Ingresa tu nombre completo"
 								placeholder="Ej. Juan Pérez"
 								required
-								class="mt-1 w-full rounded border bg-white p-2"
+								class="mt-1 w-full rounded border p-2"
 							/>
 						</div>
 						<div class="col-span-2 flex-col content-center gap-2 self-center md:col-span-1">
-							<label for="indicativo" class="block text-sm font-medium text-gray-700"
-								>Indicativo</label
-							>
+							<label for="indicativo" class="block text-sm font-medium">Indicativo</label>
 							<select
 								aria-label="Indicativo de país"
 								title="Selecciona el indicativo de tu país"
 								name="indicativo"
-								class="w-28 rounded border bg-white p-2 text-sm"
+								class="w-28 rounded border p-2 text-sm"
 							>
 								<option value="+57">🇨🇴 +57</option>
 								<option value="+1">🇺🇸 +1</option>
@@ -552,9 +584,7 @@
 							</select>
 						</div>
 						<div>
-							<label for="telefono" class="block text-sm font-medium text-gray-700"
-								>Teléfono / WhatsApp *</label
-							>
+							<label for="telefono" class="block text-sm font-medium">Teléfono / WhatsApp *</label>
 							<input
 								id="telefono"
 								type="tel"
@@ -564,15 +594,13 @@
 								maxlength="15"
 								title="Ingresa un número de teléfono válido (mínimo 7 dígitos)"
 								placeholder="Ej. 3001234567"
-								class="mt-1 w-full rounded border bg-white p-2"
+								class="mt-1 w-full rounded border p-2"
 							/>
 						</div>
 					</div>
 
 					<div class="mb-4">
-						<label for="email" class="block text-sm font-medium text-gray-700"
-							>Correo electrónico *</label
-						>
+						<label for="email" class="block text-sm font-medium">Correo electrónico *</label>
 						<input
 							id="email"
 							type="email"
@@ -580,12 +608,12 @@
 							title="Ingresa un correo electrónico válido"
 							placeholder="Ej. joseelmago@dominio.com"
 							required
-							class="mt-1 w-full rounded border bg-white p-2"
+							class="mt-1 w-full rounded border p-2"
 						/>
 					</div>
 
 					<div class="mb-6">
-						<label for="notasCliente" class="block text-sm font-medium text-gray-700"
+						<label for="notasCliente" class="block text-sm font-medium"
 							>Notas o comentarios (opcional)</label
 						>
 						<textarea
@@ -593,20 +621,20 @@
 							name="notasCliente"
 							title="Hay algo que debamos saber antes de tu cita?"
 							rows="2"
-							class="mt-1 w-full rounded border bg-white p-2"></textarea>
+							class="mt-1 w-full rounded border p-2"></textarea>
 					</div>
 
 					<button
 						type="submit"
 						disabled={enviando}
-						class="w-full rounded-lg bg-primary py-3 font-bold text-white transition hover:bg-primary/90 disabled:opacity-50"
+						class="w-full rounded-lg bg-accent py-3 font-bold text-white transition hover:scale-95 hover:bg-accent/90 disabled:opacity-50"
 					>
 						{enviando
 							? 'Redirigiendo a Mercado Pago...'
 							: `Pagar $${servicioActual.precio.toLocaleString('es-CO')} y Agendar`}
 					</button>
 				</form>
-			{/if}
-		</div>
+			</div>
+		{/if}
 	</section>
 </main>
