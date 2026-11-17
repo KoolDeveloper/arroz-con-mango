@@ -325,8 +325,9 @@
 			/>
 			<img
 				id="banner-image"
-				src="banner.jpg"
+				src="banner.webp"
 				alt="Banner"
+				fetchpriority="high"
 				class="h-full w-full object-cover opacity-0"
 			/>
 		</picture>
@@ -373,8 +374,9 @@
 	>
 		<img
 			id="profile-image"
-			src="profile.jpeg"
+			src="profile.webp"
 			alt="Profile"
+			loading="lazy"
 			class="absolute -z-1 h-full w-full object-cover object-[25%_40%] opacity-0"
 		/>
 		<img
@@ -396,11 +398,10 @@
 				loopDelay={3}
 			/>
 			<h2 class="text-justify text-4xl text-white uppercase">
-				Mirarte de frente Reconoce los patrones, las creencias y las historias que influyen en tu
-				manera de vivir<span class="text-accent">Hacerte cargo</span>.
+				Mirarte de frente y <span class="text-accent">reconocer los patrones</span>.
 			</h2>
 			<p>
-				Durante mucho tiempo podemos vivir en automático, repetir historias, cargar emociones y
+				Durante mucho tiempo podemos estar viviendo en automático, repetir historias, cargar emociones y
 				tomar decisiones sin preguntarnos realmente por qué hacemos lo que hacemos. Yo también he
 				tenido que cuestionarme, enfrentar mis propias contradicciones y descubrir que cambiar no
 				consiste solamente en querer algo diferente.

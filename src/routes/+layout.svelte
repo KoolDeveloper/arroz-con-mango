@@ -71,7 +71,7 @@
 
 		<!-- CAPA 2: La imagen real con transición suave (Blur Loading) -->
 		<img
-			src="/modal.jpg"
+			src="/modal.webp"
 			alt="Background Loader"
 			class="absolute inset-0 z-0 h-full w-full object-cover object-center transition-all duration-700 ease-out
                    {imageLoaded ? 'blur-0 scale-100 opacity-100' : 'scale-105 opacity-0 blur-xl'}"
