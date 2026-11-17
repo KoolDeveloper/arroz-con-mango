@@ -5,7 +5,6 @@
 </script>
 
 <main class=" h-screen w-screen">
-	<Header />
 	<section class="mt-10 flex flex-col items-center justify-center gap-4 p-4">
 		<h1 class="text-2xl font-bold">Error {page.status}</h1>
 		<p class="text-lg">Ha ocurrido un error inesperado.</p>
