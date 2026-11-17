@@ -414,7 +414,8 @@
 				loopDelay={3}
 			/>
 			<h2 class="text-justify text-4xl text-white uppercase">
-				Mirarte de frente,hacerte cargo,<span class="text-accent">construir algo diferente</span>.
+				Mirarte de frente Reconoce los patrones, las creencias y las historias que influyen en tu
+				manera de vivir<span class="text-accent">Hacerte cargo</span>.
 			</h2>
 			<p>
 				Durante mucho tiempo podemos vivir en automático, repetir historias, cargar emociones y
@@ -424,14 +425,13 @@
 			</p>
 			<p>
 				Hoy quiero poner mi experiencia y mis herramientas al servicio de otras personas. Quizás no
-				necesitas otra respuesta. Necesitas empezar a hacerte otras preguntas. Un espacio de
+				necesitas otra respuesta. <span class="text-accent">Necesitas empezar a hacerte otras preguntas.</span> Un espacio de
 				conversación y acompañamiento para explorar lo que estás viviendo, cuestionar aquello que
 				das por sentado y descubrir posibilidades que hoy quizás no estás viendo.
 			</p>
 			<p>
-				Mirarte de frente Reconoce los patrones, las creencias y las historias que influyen en tu
-				manera de vivir. Hacerte cargo Comprende tus emociones, cuestiona tus respuestas habituales
-				y recupera tu capacidad de elegir. Construir algo diferente Lleva tus reflexiones a la vida
+				Comprende tus emociones, cuestiona tus respuestas habituales y recupera tu capacidad de
+				elegir. <span class="text-accent">Construir algo diferente</span> Lleva tus reflexiones a la vida
 				cotidiana y comienza a crear cambios que tengan sentido para ti.
 			</p>
 		</div>
