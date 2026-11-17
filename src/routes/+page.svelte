@@ -321,7 +321,7 @@
 				id="banner-logo"
 				src="logotipo.png"
 				alt="Logo"
-				class="fixed left-1/2 h-32 w-32 -translate-x-1/2 object-cover opacity-0 md:left-0 md:h-40 md:w-40 md:translate-x-0"
+				class="absolute left-1/2 h-32 w-32 -translate-x-1/2 object-cover opacity-0 md:left-0 md:h-40 md:w-40 md:translate-x-0"
 			/>
 			<img
 				id="banner-image"
@@ -367,17 +367,25 @@
 			>
 		</div>
 	</section>
-	<section id="profile" class="relative min-h-screen overflow-x-hidden overflow-y-scroll snap-start snap-always">
+	<section
+		id="profile"
+		class="relative min-h-screen snap-start snap-always overflow-x-hidden overflow-y-scroll"
+	>
 		<img
 			id="profile-image"
 			src="profile.jpeg"
 			alt="Profile"
 			class="absolute -z-1 h-full w-full object-cover object-[25%_40%] opacity-0"
 		/>
+		<img
+			src="logotipo.png"
+			alt="Logo"
+			class="absolute top-0 left-1/2 h-32 w-32 -translate-x-1/2 object-cover md:left-0 md:h-40 md:w-40 md:translate-x-0"
+		/>
 
 		<div
-			class="relative top-[20vh] md:top-0 left-1/2 grid w-8/10 max-w-187.5 -translate-x-1/2 gap-4 text-white md:left-0 md:ml-10
-				   md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
+			class="relative top-[20vh] left-1/2 mb-20 grid w-8/10 max-w-187.5 -translate-x-1/2 gap-4 text-white md:top-0 md:left-0
+				   md:ml-10 md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
 		>
 			<Shuffle
 				text="Sobre Mi"
@@ -418,10 +426,12 @@
 		<div class="absolute top-1/2 -z-10 h-1/2 w-full -translate-y-1/2 opacity-30">
 			<Prisma height={5} baseWidth={10} scale={1} />
 		</div>
-		<div
-			bind:this={form1El}
-			class="relative w-[90vw] max-w-3xl text-center text-white"
-		>
+		<img
+			src="logotipo.png"
+			alt="Logo"
+			class="absolute top-0 left-1/2 h-32 w-32 -translate-x-1/2 object-cover md:left-0 md:h-40 md:w-40 md:translate-x-0"
+		/>
+		<div bind:this={form1El} class="relative w-[90vw] max-w-3xl text-center text-white">
 			<h1 class="mb-4 text-3xl font-bold text-accent uppercase">Agenda tu Sesión</h1>
 
 			{#if form?.error}
@@ -511,7 +521,7 @@
 		{#if bloqueSeleccionado && servicioActual}
 			<div
 				bind:this={form2El}
-				class="relative w-[90vw] max-w-3xl text-center text-white top-[10vh] md:top-0 mb-20"
+				class="relative top-[10vh] mb-20 w-[90vw] max-w-3xl text-center text-white md:top-0"
 			>
 				<button onclick={() => animateSwitch(1)} class="mx-auto flex gap-2 p-4"
 					>Cancelar <span class="rotate-45 text-xl text-red-500"><Icon icon={Cross} /></span
