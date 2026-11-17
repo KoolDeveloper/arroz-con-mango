@@ -11,7 +11,6 @@
 
 	let { data, form } = $props();
 
-	// Estado local inicializado limpio (evita la advertencia de Svelte 5)
 	let tipoCitaId = $state<string>('');
 	let fechaSeleccionada = $state<string>('');
 	let bloqueSeleccionado = $state<{
@@ -30,7 +29,6 @@
 
 	let currentSectionIndex = $state(0);
 	let isTransitioning = false;
-	let touchStartY = 0;
 
 	$effect(() => {
 		if (!tipoCitaId && data.tiposCita.length > 0) {
@@ -179,7 +177,7 @@
 		const tl = gsap.timeline({ defaults: { duration: 0.35, ease: 'power3.inOut' } });
 
 		// Salida
-		tl.to(leaving, { opacity: 0, y: 20, pointerEvents: 'none' }, 0);
+		tl.to(leaving, { opacity: 0, y: 20, pointerEvents: 'none', display: 'none' }, 0);
 
 		// Entrada (overlap ligero)
 		tl.set(entering, { display: 'block', opacity: 0, y: -20 });
@@ -187,7 +185,7 @@
 	}
 	// Función unificada de transición con la cortina
 	const playCurtain = (direction: 'down' | 'up', onMidpoint?: () => void) => {
-		if (isTransitioning) return;
+		if (!transitionOverlay) return;
 		isTransitioning = true;
 
 		gsap.killTweensOf(transitionOverlay);
@@ -200,14 +198,14 @@
 			{ yPercent: startY, opacity: 1 },
 			{
 				yPercent: 0,
-				duration: 0.3,
-				ease: 'power2.inOut',
+				duration: 0.28,
+				ease: 'power2.out',
 				onComplete: () => {
 					if (onMidpoint) onMidpoint();
 					gsap.to(transitionOverlay, {
 						yPercent: endY,
-						duration: 0.3,
-						ease: 'power2.inOut',
+						duration: 0.28,
+						ease: 'power2.in',
 						onComplete: () => {
 							isTransitioning = false;
 						}
@@ -217,78 +215,54 @@
 		);
 	};
 
-	// Cambio de sección controlado sin delay por scroll nativo
-	const changeSection = (targetIndex: number) => {
-		const sections = mainEl.querySelectorAll('section');
-		if (
-			targetIndex < 0 ||
-			targetIndex >= sections.length ||
-			targetIndex === currentSectionIndex ||
-			isTransitioning
-		) {
-			return;
-		}
-
-		const direction = targetIndex > currentSectionIndex ? 'down' : 'up';
-		playCurtain(direction, () => {
-			currentSectionIndex = targetIndex;
-			sections[targetIndex].scrollIntoView({ behavior: 'auto' });
-		});
-	};
-
 	// Event listeners directos para eliminar cualquier retraso en el scroll de la rueda
 	$effect(() => {
 		if (!mainEl) return;
+		const sections = Array.from(mainEl.querySelectorAll('section'));
 
-		const handleWheel = (e: WheelEvent) => {
-			e.preventDefault();
-			if (isTransitioning) return;
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					// Cuando una sección ocupa más del 55% de la pantalla
+					if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
+						const newIndex = sections.indexOf(entry.target as HTMLElement);
+						if (newIndex !== -1 && newIndex !== currentSectionIndex) {
+							const direction = newIndex > currentSectionIndex ? 'down' : 'up';
+							currentSectionIndex = newIndex;
 
-			if (e.deltaY > 20) {
-				changeSection(currentSectionIndex + 1);
-			} else if (e.deltaY < -20) {
-				changeSection(currentSectionIndex - 1);
-			}
-		};
-
-		const handleTouchStart = (e: TouchEvent) => {
-			touchStartY = e.touches[0].clientY;
-		};
-
-		const handleTouchMove = (e: TouchEvent) => {
-			if (isTransitioning) return;
-			const touchEndY = e.touches[0].clientY;
-			const diff = touchStartY - touchEndY;
-
-			if (Math.abs(diff) > 40) {
-				if (diff > 0) {
-					changeSection(currentSectionIndex + 1);
-				} else {
-					changeSection(currentSectionIndex - 1);
+							// Solo dispara la cortina por scroll si no viene de un clic en botón
+							if (!isTransitioning) {
+								playCurtain(direction);
+							}
+						}
+					}
 				}
-				touchStartY = touchEndY;
+			},
+			{
+				root: mainEl,
+				threshold: [0.55]
 			}
-		};
+		);
 
-		mainEl.addEventListener('wheel', handleWheel, { passive: false });
-		mainEl.addEventListener('touchstart', handleTouchStart, { passive: true });
-		mainEl.addEventListener('touchmove', handleTouchMove, { passive: false });
-
-		return () => {
-			mainEl.removeEventListener('wheel', handleWheel);
-			mainEl.removeEventListener('touchstart', handleTouchStart);
-			mainEl.removeEventListener('touchmove', handleTouchMove);
-		};
+		sections.forEach((sec) => observer.observe(sec));
+		return () => observer.disconnect();
 	});
 
 	const goToSection = (id: string, targetIndex: number) => {
-		changeSection(targetIndex);
+		if (!mainEl || targetIndex === currentSectionIndex || isTransitioning) return;
+		const sections = mainEl.querySelectorAll('section');
+		const direction = targetIndex > currentSectionIndex ? 'down' : 'up';
+
+		playCurtain(direction, () => {
+			currentSectionIndex = targetIndex;
+			sections[targetIndex]?.scrollIntoView({ behavior: 'instant' });
+		});
 	};
 </script>
 
 <main
 	bind:this={mainEl}
-	class="h-screen snap-y snap-mandatory overflow-x-hidden overflow-y-scroll scroll-smooth"
+	class="h-dvh snap-y snap-mandatory overflow-x-hidden overflow-y-auto overscroll-y-none"
 >
 	<div
 		bind:this={transitionOverlay}
@@ -393,7 +367,7 @@
 			>
 		</div>
 	</section>
-	<section id="profile" class="relative h-screen snap-start snap-always overflow-hidden">
+	<section id="profile" class="relative min-h-screen overflow-x-hidden overflow-y-scroll snap-start snap-always">
 		<img
 			id="profile-image"
 			src="profile.jpeg"
@@ -402,7 +376,7 @@
 		/>
 
 		<div
-			class="absolute top-0 left-1/2 grid w-8/10 max-w-187.5 -translate-x-1/2 translate-y-[20vh] gap-4 text-white md:left-0 md:ml-10
+			class="relative top-[20vh] md:top-0 left-1/2 grid w-8/10 max-w-187.5 -translate-x-1/2 gap-4 text-white md:left-0 md:ml-10
 				   md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
 		>
 			<Shuffle
@@ -425,9 +399,10 @@
 			</p>
 			<p>
 				Hoy quiero poner mi experiencia y mis herramientas al servicio de otras personas. Quizás no
-				necesitas otra respuesta. <span class="text-accent">Necesitas empezar a hacerte otras preguntas.</span> Un espacio de
-				conversación y acompañamiento para explorar lo que estás viviendo, cuestionar aquello que
-				das por sentado y descubrir posibilidades que hoy quizás no estás viendo.
+				necesitas otra respuesta. <span class="text-accent"
+					>Necesitas empezar a hacerte otras preguntas.</span
+				> Un espacio de conversación y acompañamiento para explorar lo que estás viviendo, cuestionar
+				aquello que das por sentado y descubrir posibilidades que hoy quizás no estás viendo.
 			</p>
 			<p>
 				Comprende tus emociones, cuestiona tus respuestas habituales y recupera tu capacidad de
@@ -436,13 +411,16 @@
 			</p>
 		</div>
 	</section>
-	<section id="agenda" class="relative h-screen snap-start overflow-y-scroll">
+	<section
+		id="agenda"
+		class="relative flex min-h-dvh snap-start flex-col items-center justify-center py-16"
+	>
 		<div class="absolute top-1/2 -z-10 h-1/2 w-full -translate-y-1/2 opacity-30">
 			<Prisma height={5} baseWidth={10} scale={1} />
 		</div>
 		<div
 			bind:this={form1El}
-			class="absolute top-[18vh] left-1/2 w-[90vw] max-w-3xl -translate-x-1/2 text-center text-white"
+			class="relative w-[90vw] max-w-3xl text-center text-white"
 		>
 			<h1 class="mb-4 text-3xl font-bold text-accent uppercase">Agenda tu Sesión</h1>
 
@@ -533,7 +511,7 @@
 		{#if bloqueSeleccionado && servicioActual}
 			<div
 				bind:this={form2El}
-				class="absolute top-[18vh] left-1/2 w-[90vw] max-w-3xl -translate-x-1/2 text-center text-white"
+				class="relative w-[90vw] max-w-3xl text-center text-white top-[10vh] md:top-0 mb-20"
 			>
 				<button onclick={() => animateSwitch(1)} class="mx-auto flex gap-2 p-4"
 					>Cancelar <span class="rotate-45 text-xl text-red-500"><Icon icon={Cross} /></span
