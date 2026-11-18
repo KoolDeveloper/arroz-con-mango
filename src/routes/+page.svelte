@@ -4,6 +4,8 @@
 	import Shuffle from '$lib/components/ui/Shuffle.svelte';
 	import { appState } from '$lib/stores/appState.svelte';
 	import Prisma from '$lib/components/ui/Prisma.svelte';
+	import Footer from '$lib/components/ui/Footer.svelte';
+	import MediaIcons from '$lib/components/ui/MediaIcons.svelte';
 	import Icon from '@iconify/svelte';
 	import DownArrow from '@iconify-icons/arcticons/arc-launcher';
 	import Cross from '@iconify-icons/arcticons/cross';
@@ -401,10 +403,10 @@
 				Mirarte de frente y <span class="text-accent">reconocer los patrones</span>.
 			</h2>
 			<p>
-				Durante mucho tiempo podemos estar viviendo en automático, repetir historias, cargar emociones y
-				tomar decisiones sin preguntarnos realmente por qué hacemos lo que hacemos. Yo también he
-				tenido que cuestionarme, enfrentar mis propias contradicciones y descubrir que cambiar no
-				consiste solamente en querer algo diferente.
+				Durante mucho tiempo podemos estar viviendo en automático, repetir historias, cargar
+				emociones y tomar decisiones sin preguntarnos realmente por qué hacemos lo que hacemos. Yo
+				también he tenido que cuestionarme, enfrentar mis propias contradicciones y descubrir que
+				cambiar no consiste solamente en querer algo diferente.
 			</p>
 			<p>
 				Hoy quiero poner mi experiencia y mis herramientas al servicio de otras personas. Quizás no
@@ -418,6 +420,11 @@
 				elegir. <span class="text-accent">Construir algo diferente</span> Lleva tus reflexiones a la vida
 				cotidiana y comienza a crear cambios que tengan sentido para ti.
 			</p>
+
+			<div class="my-4 grid gap-4">
+				<h3 class="text-center">Sigueme en redes sociales:</h3>
+				<MediaIcons class="w-full justify-around" />
+			</div>
 		</div>
 	</section>
 	<section
@@ -631,5 +638,7 @@
 				</form>
 			</div>
 		{/if}
+
+		<Footer class="absolute bottom-0" />
 	</section>
 </main>
