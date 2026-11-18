@@ -39,7 +39,7 @@
 		};
 
 		const img = new Image();
-		img.src = '/modal.jpg';
+		img.src = '/modal.webp';
 
 		// Si ya está en caché del navegador, disparamos de una vez
 		if (img.complete) {
