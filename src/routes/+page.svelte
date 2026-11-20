@@ -97,6 +97,7 @@
 				const bannerImage = document.getElementById('banner-image');
 				const bannerTitle = document.getElementById('banner-title');
 				const profileImage = document.getElementById('profile-image');
+				const socialbg = document.getElementById('socialbg');
 				const bannerText = document.getElementById('banner-text');
 				const bannerButtons = document.getElementById('banner-buttons');
 
@@ -146,6 +147,25 @@
 							ease: 'none',
 							scrollTrigger: {
 								trigger: profileImage.parentElement,
+								scroller: mainEl,
+								start: 'top bottom',
+								end: 'top top',
+								scrub: true
+							}
+						}
+					);
+				}
+				if (socialbg) {
+					gsap.fromTo(
+						socialbg,
+						{ scaleY: 0.3, scaleX: 0.5, y: 0, x: 0, opacity: 1 },
+						{
+							scale: 1,
+							opacity: 0.1,
+							duration: 1.5,
+							ease: 'none',
+							scrollTrigger: {
+								trigger: socialbg.parentElement,
 								scroller: mainEl,
 								start: 'top bottom',
 								end: 'top top',
@@ -309,7 +329,7 @@
 			</div>
 		</div>
 	</div>
-	{#if currentSectionIndex < 2}
+	{#if currentSectionIndex < 3}
 		<div
 			class="fixed bottom-2 left-1/2 flex -translate-x-1/2 animate-bounce flex-col items-center text-xs text-primary uppercase"
 		>
@@ -374,18 +394,20 @@
 		id="profile"
 		class="relative min-h-screen snap-start snap-always overflow-x-hidden overflow-y-scroll"
 	>
-		<img
-			id="profile-image"
-			src="profile.webp"
-			alt="Profile"
-			loading="lazy"
-			class="absolute -z-1 h-full w-full object-cover object-[25%_40%] opacity-0"
-		/>
-		<img
-			src="logotipo.png"
-			alt="Logo"
-			class="absolute top-0 left-1/2 h-32 w-32 -translate-x-1/2 object-cover md:left-0 md:h-40 md:w-40 md:translate-x-0"
-		/>
+		<picture>
+			<img
+				id="profile-image"
+				src="profile.webp"
+				alt="Profile"
+				loading="lazy"
+				class="absolute -z-1 h-full w-full object-cover object-[25%_40%] opacity-0"
+			/>
+			<img
+				src="logotipo.png"
+				alt="Logo"
+				class="absolute top-0 left-1/2 h-32 w-32 -translate-x-1/2 object-cover md:left-0 md:h-40 md:w-40 md:translate-x-0"
+			/>
+		</picture>
 
 		<div
 			class="relative top-[20vh] left-1/2 mb-20 grid w-8/10 max-w-187.5 -translate-x-1/2 gap-4 text-white md:top-0 md:left-0
@@ -420,11 +442,37 @@
 				elegir. <span class="text-accent">Construir algo diferente</span> Lleva tus reflexiones a la vida
 				cotidiana y comienza a crear cambios que tengan sentido para ti.
 			</p>
+		</div>
+	</section>
+	<section class="relative min-h-screen snap-start snap-always overflow-x-hidden overflow-y-scroll">
+		<picture>
+			<img
+				id="socialbg"
+				src="socialMed.webp"
+				alt="Profile"
+				loading="lazy"
+				class="absolute -z-1 h-full w-full object-cover object-[25%_40%] opacity-0"
+			/>
+			<img
+				src="logotipo.png"
+				alt="Logo"
+				class="absolute top-0 left-1/2 h-32 w-32 -translate-x-1/2 object-cover md:left-0 md:h-40 md:w-40 md:translate-x-0"
+			/>
+		</picture>
+		<div
+			class="relative top-[20vh] left-1/2 mb-20 grid w-8/10 max-w-187.5 -translate-x-1/2 gap-4 text-white md:top-0 md:left-0
+				   md:ml-10 md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
+		>
+			<Shuffle
+				text="Mis redes - Podcast"
+				active={currentSectionIndex === 2}
+				style="font-size: 20px; font-family: var(--font-title); width: 100%; text-align: justify; color: #a1f1c0;"
+				duration={0.4}
+				loop={true}
+				loopDelay={3}
+			/>
 
-			<div class="my-4 grid gap-4">
-				<h3 class="text-center">Sigueme en redes sociales:</h3>
-				<MediaIcons class="w-full justify-around" />
-			</div>
+			<MediaIcons class="mt-10 grid w-full justify-items-center gap-6 md:grid-cols-4" />
 		</div>
 	</section>
 	<section
