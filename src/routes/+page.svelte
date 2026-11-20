@@ -379,7 +379,7 @@
 			class="absolute bottom-[10vh] left-1/2 grid w-8/10 -translate-x-1/2 items-center justify-center gap-4 text-white opacity-0 md:bottom-[18vh] md:left-0 md:ml-10 md:flex md:w-auto md:translate-x-0"
 		>
 			<button
-				onclick={() => goToSection('agenda', 2)}
+				onclick={() => goToSection('agenda', 3)}
 				class="border-2 border-transparent bg-accent px-4 py-2 text-center text-black uppercase transition duration-300 hover:scale-95 hover:border-primary hover:bg-white hover:text-primary"
 				>Reservar sesión</button
 			>
