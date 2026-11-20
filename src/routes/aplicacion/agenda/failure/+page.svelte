@@ -13,11 +13,4 @@
 		Si hubo un problema con tu pago recomendamos esperar 15 minutos para que se libere nuevamente el
 		horario en la agenda.
 	</p>
-
-	<a
-		href={resolve('/aplicacion/agenda')}
-		class="mt-6 inline-block rounded bg-primary px-4 py-2 text-white"
-	>
-		Intentar nuevamente
-	</a>
 </StatusDial>

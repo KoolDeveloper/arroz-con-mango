@@ -6,7 +6,7 @@
 	const { children } = $props();
 </script>
 
-<div class="my-8 mx-auto max-w-2xl p-8 text-center bg-background border-2 border-[#f6c4a4]">
+<div class="my-8 mx-auto max-w-2xl p-8 text-center bg-background border-2 border-primary">
 	{@render children()}
 
 	<section class="mt-6 grid items-center justify-center gap-4 rounded-lg border p-4 text-left">

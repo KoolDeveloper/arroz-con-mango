@@ -1,7 +1,6 @@
 <script>
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
-	import Header from '$lib/components/ui/Header.svelte';
 </script>
 
 <main class=" h-screen w-screen">
