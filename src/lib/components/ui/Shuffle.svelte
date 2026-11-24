@@ -90,6 +90,7 @@
         let splitInstance: GSAPSplitText | null = null;
         let wrappers: HTMLElement[] = [];
         let tl: gsap.core.Timeline | null = null;
+        let io: IntersectionObserver | null = null;
         let playing = false;
         let hoverHandler: (() => void) | null = null;
 
@@ -385,8 +386,33 @@
         armHover();
         ready = true;
 
+        // El loop es infinito: lo pausamos cuando el texto no esta visible para no
+        // estar actualizando transforms (y manteniendo capas) fuera de pantalla.
+        if (loop) {
+            io = new IntersectionObserver(
+                (entries) => {
+                    const visible = entries.some((e) => e.isIntersecting);
+                    if (!tl) return;
+                    const strips = inners();
+                    if (visible) {
+                        strips.forEach((s) => (s.style.willChange = 'transform'));
+                        tl.play();
+                    } else {
+                        tl.pause();
+                        strips.forEach((s) => (s.style.willChange = 'auto'));
+                    }
+                },
+                { threshold: 0.01 }
+            );
+            io.observe(root);
+        }
+
         return () => {
             removeHover();
+            if (io) {
+                io.disconnect();
+                io = null;
+            }
             teardown();
             ready = false;
         };
@@ -407,7 +433,6 @@
         display: inline-block;
         white-space: normal;
         word-wrap: break-word;
-        will-change: transform;
         line-height: 1;
         font-size: 4rem;
         font-family: 'Press Start 2P', sans-serif;

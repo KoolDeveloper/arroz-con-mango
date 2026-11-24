@@ -18,6 +18,8 @@
 		bloom?: number;
 		suspendWhenOffscreen?: boolean;
 		timeScale?: number;
+		maxDpr?: number;
+		fpsCap?: number;
 	};
 
 	let {
@@ -34,8 +36,16 @@
 		hoverStrength = 2,
 		inertia = 0.05,
 		bloom = 1,
-		suspendWhenOffscreen = false,
-		timeScale = 0.5
+		// The fragment shader raymarches every pixel every frame; rendering while
+		// the section is below the fold is pure wasted GPU/CPU (and battery).
+		suspendWhenOffscreen = true,
+		timeScale = 0.5,
+		// Cap the drawing buffer: full DPR 2 quadruples the per-pixel cost for a
+		// barely visible sharpness gain on this effect.
+		maxDpr = 1.5,
+		// La animacion es un glow que cambia despacio: dibujar a ~30fps se ve igual
+		// y reduce a la mitad el coste de un shader que raymarchea todo el pixel.
+		fpsCap = 30
 	}: Props = $props();
 
 	let containerRef: HTMLDivElement;
@@ -58,7 +68,7 @@
 		const HOVSTR = Math.max(0, hoverStrength || 1);
 		const INERT = Math.max(0, Math.min(1, inertia || 0.12));
 
-		const dpr = Math.min(2, window.devicePixelRatio || 1);
+		const dpr = Math.min(maxDpr, window.devicePixelRatio || 1);
 		const renderer = new Renderer({ dpr, alpha: transparent, antialias: false });
 		const gl = renderer.gl;
 		gl.disable(gl.DEPTH_TEST);
@@ -246,6 +256,9 @@ void main() {
 			program.uniforms.uUseBaseWobble.value = 1;
 		}
 
+		const minFrameInterval = 1000 / Math.max(1, fpsCap);
+		let lastDraw = -Infinity;
+
 		const render = (t: number) => {
 			const time = (t - t0) * 0.001;
 			program.uniforms.iTime.value = time;
@@ -277,7 +290,10 @@ void main() {
 				program.uniforms.uRot.value = rotBuf;
 				if (TS < 1e-6) continueRAF = false;
 			}
-			renderer.render({ scene: mesh });
+			if (t - lastDraw >= minFrameInterval) {
+				lastDraw = t;
+				renderer.render({ scene: mesh });
+			}
 			if (continueRAF) raf = requestAnimationFrame(render);
 			else raf = 0;
 		};
@@ -303,6 +319,7 @@ void main() {
 				window.removeEventListener('blur', onBlur);
 			}
 			if (io) io.disconnect();
+			// eslint-disable-next-line svelte/no-dom-manipulating
 			if (gl.canvas.parentElement === containerRef) containerRef.removeChild(gl.canvas);
 		};
 	});

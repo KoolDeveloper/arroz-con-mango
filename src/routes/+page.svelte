@@ -32,6 +32,26 @@
 	let currentSectionIndex = $state(0);
 	let isTransitioning = false;
 
+	const reduceMotion =
+		typeof window !== 'undefined' &&
+		window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	// Under prefers-reduced-motion, jump straight to the final state instead of tweening.
+	const tweenOrSet = (el: HTMLElement | null, from: gsap.TweenVars, to: gsap.TweenVars) => {
+		if (!el) return;
+		if (reduceMotion) {
+			const target: gsap.TweenVars = { ...to };
+			delete target.scrollTrigger;
+			delete target.duration;
+			delete target.delay;
+			delete target.ease;
+			delete target.onComplete;
+			gsap.set(el, target);
+			return;
+		}
+		gsap.fromTo(el, from, to);
+	};
+
 	$effect(() => {
 		if (!tipoCitaId && data.tiposCita.length > 0) {
 			tipoCitaId = data.tiposCita[0].id;
@@ -103,42 +123,42 @@
 				const bannerButtons = document.getElementById('banner-buttons');
 
 				if (bannerLogo) {
-					gsap.fromTo(bannerLogo, { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: 2 });
+					tweenOrSet(bannerLogo, { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out' });
 				}
 
 				if (bannerImage) {
-					gsap.fromTo(
+					tweenOrSet(
 						bannerImage,
 						{ opacity: 0, scale: 1.25 },
-						{ opacity: 0.2, scale: 1, duration: 2 }
+						{ opacity: 0.2, scale: 1, duration: 1.2, ease: 'power2.out' }
 					);
 				}
 
 				if (bannerTitle) {
-					gsap.fromTo(
+					tweenOrSet(
 						bannerTitle,
 						{ color: 'white', opacity: 0, y: -100 },
-						{ color: '#cd973a', opacity: 1, y: 0, duration: 3, delay: 0.5, ease: 'power3.out' }
+						{ color: '#cd973a', opacity: 1, y: 0, duration: 1.4, delay: 0.15, ease: 'power3.out' }
 					);
 				}
 				if (bannerText) {
-					gsap.fromTo(
+					tweenOrSet(
 						bannerText,
 						{ opacity: 0, y: 50 },
-						{ opacity: 1, y: 0, duration: 3, delay: 0.5, ease: 'power3.out' }
+						{ opacity: 1, y: 0, duration: 1.4, delay: 0.15, ease: 'power3.out' }
 					);
 				}
 
 				if (bannerButtons) {
-					gsap.fromTo(
+					tweenOrSet(
 						bannerButtons,
 						{ opacity: 0, x: -50 },
-						{ opacity: 1, x: 0, duration: 3, delay: 0.5, ease: 'power3.out' }
+						{ opacity: 1, x: 0, duration: 1.4, delay: 0.15, ease: 'power3.out' }
 					);
 				}
 
 				if (profileImage) {
-					gsap.fromTo(
+					tweenOrSet(
 						profileImage,
 						{ scaleY: 0.3, scaleX: 0.5, y: 0, x: 0, opacity: 1 },
 						{
@@ -157,7 +177,7 @@
 					);
 				}
 				if (socialbg) {
-					gsap.fromTo(
+					tweenOrSet(
 						socialbg,
 						{ scaleY: 0.3, scaleX: 0.5, y: 0, x: 0, opacity: 1 },
 						{
@@ -176,7 +196,7 @@
 					);
 				}
 				if (cardsBg) {
-					gsap.fromTo(
+					tweenOrSet(
 						cardsBg,
 						{ scaleY: 0.3, scaleX: 0.5, y: 0, x: 0, opacity: 1 },
 						{
@@ -216,18 +236,31 @@
 
 		if (!leaving || !entering) return;
 
-		const tl = gsap.timeline({ defaults: { duration: 0.35, ease: 'power3.inOut' } });
+		if (reduceMotion) {
+			gsap.set(leaving, { display: 'none', pointerEvents: 'none' });
+			gsap.set(entering, { display: 'block', opacity: 1, y: 0, pointerEvents: 'auto' });
+			return;
+		}
+
+		const tl = gsap.timeline({ defaults: { duration: 0.25, ease: 'power3.inOut' } });
 
 		// Salida
 		tl.to(leaving, { opacity: 0, y: 20, pointerEvents: 'none', display: 'none' }, 0);
 
 		// Entrada (overlap ligero)
 		tl.set(entering, { display: 'block', opacity: 0, y: -20 });
-		tl.to(entering, { opacity: 1, y: 0, pointerEvents: 'auto' }, 0.1);
+		tl.to(entering, { opacity: 1, y: 0, pointerEvents: 'auto' }, 0.08);
 	}
 	// Función unificada de transición con la cortina
 	const playCurtain = (direction: 'down' | 'up', onMidpoint?: () => void) => {
 		if (!transitionOverlay) return;
+
+		// Sin animacion: saltar directo al destino.
+		if (reduceMotion) {
+			onMidpoint?.();
+			return;
+		}
+
 		isTransitioning = true;
 
 		gsap.killTweensOf(transitionOverlay);
@@ -240,13 +273,13 @@
 			{ yPercent: startY, opacity: 1 },
 			{
 				yPercent: 0,
-				duration: 0.28,
+				duration: 0.2,
 				ease: 'power2.out',
 				onComplete: () => {
 					if (onMidpoint) onMidpoint();
 					gsap.to(transitionOverlay, {
 						yPercent: endY,
-						duration: 0.28,
+						duration: 0.2,
 						ease: 'power2.in',
 						onComplete: () => {
 							isTransitioning = false;
@@ -301,6 +334,10 @@
 		});
 	};
 </script>
+
+<svelte:head>
+	<link rel="preload" as="image" href="/banner.webp" fetchpriority="high" />
+</svelte:head>
 
 <main
 	bind:this={mainEl}

@@ -13,23 +13,32 @@
 
 	onMount(() => {
 		const startTime = Date.now();
-		const minDisplayTime = 1500; // Tiempo mínimo visible en ms (1.5 segundos)
+		// Short enough to feel instant, long enough to avoid a flash of unstyled content.
+		const minDisplayTime = 600;
+		const reduceMotion =
+			typeof window !== 'undefined' &&
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 		const finishLoaderAnimation = () => {
 			imageLoaded = true;
 
 			// Calculamos cuánto tiempo ha pasado desde que abrió la web
 			const elapsed = Date.now() - startTime;
-			// Si cargó muy rápido, esperamos lo que falte para completar los 1.5s
+			// Si cargó muy rápido, esperamos lo que falte para completar el mínimo
 			const remainingTime = Math.max(0, minDisplayTime - elapsed);
 
 			setTimeout(() => {
 				if (!loaderElement) return;
 
+				if (reduceMotion) {
+					appState.finishLoading();
+					return;
+				}
+
 				gsap.to(loaderElement, {
 					opacity: 0,
 					scale: 1.05,
-					duration: 0.8,
+					duration: 0.45,
 					ease: 'power2.inOut',
 					onComplete: () => {
 						appState.finishLoading();
@@ -54,6 +63,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<link rel="preload" as="image" href="/modal.webp" />
 	<title>Alejo Mentor - Liberate</title>
 	<meta
 		name="description"
