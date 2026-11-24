@@ -10,6 +10,7 @@
 	import DownArrow from '@iconify-icons/arcticons/arc-launcher';
 	import Cross from '@iconify-icons/arcticons/cross';
 	import { enhance } from '$app/forms';
+	import CardGallery from '$lib/components/landing/cardGallery.svelte';
 
 	let { data, form } = $props();
 
@@ -26,15 +27,14 @@
 	let mainEl: HTMLElement;
 	let transitionOverlay: HTMLElement;
 	let form1El: HTMLDivElement;
-	let form2El: HTMLDivElement;
+	let form2El = $state<HTMLDivElement | undefined>(undefined);
 	let currentForm = $state(1);
 
 	let currentSectionIndex = $state(0);
 	let isTransitioning = false;
 
 	const reduceMotion =
-		typeof window !== 'undefined' &&
-		window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 	// Under prefers-reduced-motion, jump straight to the final state instead of tweening.
 	const tweenOrSet = (el: HTMLElement | null, from: gsap.TweenVars, to: gsap.TweenVars) => {
@@ -123,7 +123,11 @@
 				const bannerButtons = document.getElementById('banner-buttons');
 
 				if (bannerLogo) {
-					tweenOrSet(bannerLogo, { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out' });
+					tweenOrSet(
+						bannerLogo,
+						{ opacity: 0, y: -50 },
+						{ opacity: 1, y: 0, duration: 1.1, ease: 'power3.out' }
+					);
 				}
 
 				if (bannerImage) {
@@ -467,7 +471,7 @@
 		</picture>
 
 		<div
-			class="relative top-[20vh] left-1/2 mb-20 grid w-8/10 max-w-187.5 -translate-x-1/2 gap-4 text-white md:top-0 md:left-0
+			class="relative top-[20vh] left-1/2 mb-20 grid w-8/10 max-w-187.5 max-h-[62vh] overflow-y-scroll -translate-x-1/2 gap-4 text-white md:top-0 md:left-0
 				   md:ml-10 md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
 		>
 			<Shuffle
@@ -559,6 +563,7 @@
 				loop={true}
 				loopDelay={3}
 			/>
+			<CardGallery />
 		</div>
 	</section>
 	<section

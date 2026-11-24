@@ -25,16 +25,19 @@
 	];
 </script>
 
-<section class="h-full w-full text-2xl">
-	<div class="grid gap-4 px-6 md:grid-cols-3">
+<div class="h-full w-full text-2xl">
+	<div class="grid max-h-[62vh] gap-4 overflow-y-scroll px-6 md:grid-flow-col">
 		{#each skills as skill (skill.title)}
 			<div
-				class="flex flex-col gap-2 rounded-md border-2 border-primary/50 p-4 transition-colors hover:bg-accent/10"
+				class="grid h-full w-full justify-items-center gap-2 border-2 border-primary/50 p-4 transition-colors hover:bg-accent/10 md:min-w-72"
 			>
-				<Icon icon={skill.icon} class="h-10 w-10 self-center" />
+				<Icon
+					icon={skill.icon}
+					class={`h-10 w-10 self-center ${skill.title !== 'Bienestar Emocional' ? 'animate-spin [animation-duration:8s]' : ''}`}
+				/>
 				<h3 class="text-center font-title font-bold">{skill.title}</h3>
 				<p class="text-justify">{skill.description}</p>
 			</div>
 		{/each}
 	</div>
-</section>
+</div>
