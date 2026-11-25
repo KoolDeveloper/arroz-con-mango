@@ -471,7 +471,7 @@
 		</picture>
 
 		<div
-			class="relative top-[20vh] left-1/2 mb-20 grid w-8/10 max-w-187.5 max-h-[62vh] overflow-y-scroll -translate-x-1/2 gap-4 text-white md:top-0 md:left-0
+			class="relative top-[20vh] left-1/2 mb-20 grid max-h-[62vh] w-8/10 max-w-187.5 -translate-x-1/2 gap-4 overflow-y-scroll text-white md:top-0 md:left-0
 				   md:ml-10 md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
 		>
 			<Shuffle
@@ -552,13 +552,13 @@
 			/>
 		</picture>
 		<div
-			class="relative top-[20vh] left-1/2 mb-20 grid w-8/10 max-w-187.5 -translate-x-1/2 gap-4 text-white md:top-0 md:left-0
-				   md:ml-10 md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
+			class="relative top-[20vh] left-1/2 mb-20 grid w-8/10 -translate-x-1/2 gap-4 text-white md:top-0 md:left-0
+				  md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
 		>
 			<Shuffle
 				text="Podras lograr"
 				active={currentSectionIndex === 3}
-				style="font-size: 20px; font-family: var(--font-title); width: 100%; text-align: justify; color: #a1f1c0;"
+				style="font-size: 20px; font-family: var(--font-title); width: 100%; text-align: justify; color: #a1f1c0; margin-left: 40px;"
 				duration={0.4}
 				loop={true}
 				loopDelay={3}
