@@ -1,50 +1,56 @@
 <script lang="ts">
 	import SectionKicker from './SectionKicker.svelte';
 	import SectionLogo from './SectionLogo.svelte';
+	import SunriseBackground from '$lib/components/ui/SunriseBackground.svelte';
 
-	type Props = { active: boolean; onReservar: () => void; onHistoria: () => void };
-	let { active, onReservar, onHistoria }: Props = $props();
+	type Props = {
+		active: boolean;
+		/** false mientras el loader cubre la página: no animamos nada por debajo. */
+		ready?: boolean;
+		onReservar: () => void;
+		onHistoria: () => void;
+		/** Foto opcional que se funde con el amanecer (ej. "/hero.webp"). */
+		foto?: string;
+	};
+	let { active, ready = true, onReservar, onHistoria, foto }: Props = $props();
 </script>
 
-<section class="relative h-screen snap-start snap-always">
-	<picture>
-		<SectionLogo intro />
-		<img
-			data-intro="image"
-			src="banner.webp"
-			alt="Banner"
-			fetchpriority="high"
-			class="h-full w-full object-cover opacity-0"
-		/>
-	</picture>
+<section class="relative min-h-dvh snap-start snap-always">
+	<SunriseBackground data-intro="image" rise={false} {foto} paused={!ready} class="opacity-0" />
+	<SectionLogo intro />
+
+	<!-- Columna de contenido: el texto y los botones fluyen, nunca se superponen -->
 	<div
-		class="absolute top-0 left-1/2 grid w-8/10 max-w-187.5 -translate-x-1/2 translate-y-[18vh] gap-4 text-white md:left-0 md:ml-10
-			   md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
+		class="relative flex min-h-dvh w-full flex-col justify-center gap-8 px-6 pt-36 pb-20 text-white
+			   md:max-w-3xl md:pt-40 md:pl-10 lg:pb-24"
 	>
-		<SectionKicker text="Mentor  -  Bienestar  -  Propósito" {active} />
-		<h1 data-intro="title" class="text-justify font-title text-5xl font-bold uppercase opacity-0">
-			Vuelve a elegir <span class="animate-pulse text-accent duration-200">tu vida</span>
-		</h1>
-		<p data-intro="text" class="text-justify text-xl font-bold text-gray-300 opacity-0">
-			Acompaño a personas a recuperar su paz, ordernar sus emociones y reconstruir su camino hacia
-			una vida más plena desde la experiencia.
-		</p>
-	</div>
-	<div
-		data-intro="buttons"
-		class="absolute bottom-[10vh] left-1/2 grid w-8/10 -translate-x-1/2 items-center justify-center gap-4 text-white opacity-0 md:bottom-[18vh] md:left-0 md:ml-10 md:flex md:w-auto md:translate-x-0"
-	>
-		<button
-			onclick={onReservar}
-			class="rounded-full bg-accent px-7 py-3 text-center text-sm font-semibold tracking-wider text-black uppercase shadow-[0_10px_40px_-10px_rgba(255,172,31,0.7)] transition duration-300 hover:-translate-y-0.5 hover:bg-white"
-		>
-			Reservar sesión
-		</button>
-		<button
-			onclick={onHistoria}
-			class="rounded-full border border-white/30 bg-white/5 px-7 py-3 text-center text-sm font-semibold tracking-wider text-white uppercase backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent"
-		>
-			Conoce mi historia
-		</button>
+		<div class="grid gap-4">
+			<SectionKicker text="Mentor  -  Bienestar  -  Propósito" active={active && ready} />
+			<h1
+				data-intro="title"
+				class="font-title text-4xl leading-tight font-bold text-[#cd973a] uppercase opacity-0 sm:text-5xl"
+			>
+				Vuelve a elegir <span class="animate-pulse text-accent duration-200">tu vida</span>
+			</h1>
+			<p data-intro="text" class="max-w-xl text-lg text-gray-100 opacity-0 sm:text-xl">
+				Acompaño a personas que quieren recuperar su paz, tomar el control, ordenar sus
+				emociones y reconstruir su camino hacia una vida más plena, desde mi experiencia con el juego.
+			</p>
+		</div>
+
+		<div data-intro="buttons" class="flex flex-wrap gap-3 opacity-0">
+			<button
+				onclick={onReservar}
+				class="flex-1 rounded-full bg-accent px-6 py-3 text-center text-sm font-semibold tracking-wider whitespace-nowrap text-black uppercase shadow-[0_10px_40px_-10px_rgba(255,172,31,0.7)] transition duration-300 hover:-translate-y-0.5 hover:bg-white sm:flex-none"
+			>
+				Reservar sesión
+			</button>
+			<button
+				onclick={onHistoria}
+				class="flex-1 rounded-full border border-white/30 bg-black/30 px-6 py-3 text-center text-sm font-semibold tracking-wider whitespace-nowrap text-white uppercase transition duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent sm:flex-none"
+			>
+				Conoce mi historia
+			</button>
+		</div>
 	</div>
 </section>

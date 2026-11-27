@@ -4,35 +4,26 @@ import { tweenOrSet } from './motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ENTRADA = { duration: 1.4, delay: 0.15, ease: 'power3.out' };
+/** Entrada corta y escalonada: desplazamientos pequeños = menos área a recomponer. */
+const entrada = (delay: number) => ({ duration: 0.9, delay, ease: 'power3.out' });
 
 /**
  * Animaciones de la landing:
  * - `[data-intro="..."]`: entrada del hero.
  * - `[data-parallax]`: fondo que crece y se desvanece al hacer scroll.
+ * Solo se animan transform y opacity (compositor de la GPU, sin repintar).
  * Devuelve la función de limpieza.
  */
 export function setupLandingAnimations(scroller: HTMLElement): () => void {
 	const q = (name: string) => scroller.querySelector(`[data-intro="${name}"]`);
 
 	const ctx = gsap.context(() => {
-		tweenOrSet(
-			q('logo'),
-			{ opacity: 0, y: -50 },
-			{ opacity: 1, y: 0, duration: 1.1, ease: 'power3.out' }
-		);
-		tweenOrSet(
-			q('image'),
-			{ opacity: 0, scale: 1.25 },
-			{ opacity: 0.2, scale: 1, duration: 1.2, ease: 'power2.out' }
-		);
-		tweenOrSet(
-			q('title'),
-			{ color: 'white', opacity: 0, y: -100 },
-			{ color: '#cd973a', opacity: 1, y: 0, ...ENTRADA }
-		);
-		tweenOrSet(q('text'), { opacity: 0, y: 50 }, { opacity: 1, y: 0, ...ENTRADA });
-		tweenOrSet(q('buttons'), { opacity: 0, x: -50 }, { opacity: 1, x: 0, ...ENTRADA });
+		// El fondo solo hace fade: escalarlo obligaría a re-rasterizar una capa a pantalla completa
+		tweenOrSet(q('image'), { opacity: 0 }, { opacity: 1, duration: 1, ease: 'power1.out' });
+		tweenOrSet(q('logo'), { opacity: 0, y: -20 }, { opacity: 1, y: 0, ...entrada(0) });
+		tweenOrSet(q('title'), { opacity: 0, y: -24 }, { opacity: 1, y: 0, ...entrada(0.1) });
+		tweenOrSet(q('text'), { opacity: 0, y: 20 }, { opacity: 1, y: 0, ...entrada(0.2) });
+		tweenOrSet(q('buttons'), { opacity: 0, y: 20 }, { opacity: 1, y: 0, ...entrada(0.3) });
 
 		scroller.querySelectorAll<HTMLElement>('[data-parallax]').forEach((el) => {
 			tweenOrSet(

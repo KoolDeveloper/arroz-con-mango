@@ -7,16 +7,17 @@
 	let { active }: { active: boolean } = $props();
 </script>
 
-<section class="relative min-h-screen snap-start snap-always overflow-x-hidden overflow-y-scroll">
-	<picture>
-		<SectionBackground src="cardsbg.webp" alt="Tarjetas" />
-		<SectionLogo />
-	</picture>
+<section class="relative min-h-dvh snap-start snap-always overflow-hidden">
+	<!-- El sol de la foto queda centrado en móvil -->
+	<SectionBackground src="cardsbg.webp" alt="" position="object-center" />
+	<SectionLogo />
+
 	<div
-		class="relative top-[20vh] left-1/2 mb-20 grid w-8/10 -translate-x-1/2 gap-4 text-white md:top-0 md:left-0
-			  md:w-auto md:translate-x-0 md:translate-y-[25vh] md:text-left"
+		class="relative flex min-h-dvh flex-col justify-center gap-6 pt-36 pb-20 text-white md:pt-40"
 	>
-		<SectionKicker text="Podras lograr" {active} style="margin-left: 40px;" />
+		<div class="px-6 md:px-10">
+			<SectionKicker text="Podrás lograr" {active} />
+		</div>
 		<CardGallery />
 	</div>
 </section>

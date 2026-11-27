@@ -25,10 +25,6 @@
 	});
 </script>
 
-<svelte:head>
-	<link rel="preload" as="image" href="/banner.webp" fetchpriority="high" />
-</svelte:head>
-
 <main
 	bind:this={mainEl}
 	class="h-dvh snap-y snap-mandatory overflow-x-hidden overflow-y-auto overscroll-y-none"
@@ -38,6 +34,7 @@
 
 	<HeroSection
 		active={nav.current === SECCION.hero}
+		ready={!appState.isInitialLoading}
 		onReservar={() => nav.goTo(SECCION.agenda)}
 		onHistoria={() => nav.goTo(SECCION.perfil)}
 	/>
