@@ -1,0 +1,12 @@
+PUBLIC_URL=https://tu-dominio.com
+
+# Mercado Pago (pagos locales en COP)
+MP_ACCESS_TOKEN=
+
+# PayPal (pagos internacionales en USD)
+PAYPAL_CLIENT_ID=
+PAYPAL_CLIENT_SECRET=
+# sandbox | live
+PAYPAL_ENV=sandbox
+# Pesos colombianos por 1 USD, usado para convertir el precio (PayPal no acepta COP)
+PAYPAL_COP_USD_RATE=4000

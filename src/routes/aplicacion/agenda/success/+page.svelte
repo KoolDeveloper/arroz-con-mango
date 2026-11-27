@@ -5,21 +5,31 @@
 </script>
 
 <StatusDial>
-	<h1 class="mb-4 text-4xl font-bold text-green-600">✅ Pago recibido</h1>
+	<p class="text-5xl">✅</p>
+	<h1 class="text-4xl text-secondary">Pago recibido</h1>
 
 	{#if data.cita?.estadoPago === 'aprobado'}
-		<p class="text-lg">Tu pago fue aprobado y tu cita ha sido confirmada.</p>
+		<p class="text-white/70">Tu pago fue aprobado y tu cita ha sido confirmada.</p>
 	{:else}
-		<p class="text-lg">
-			Hemos recibido el regreso de Mercado Pago y estamos verificando la transacción.
-		</p>
+		<p class="text-white/70">Recibimos tu pago y estamos verificando la transacción.</p>
 	{/if}
 
 	{#if data.cita}
-		<div class="mt-6 rounded-lg border p-4 text-left">
-			<p><strong>ID Cita:</strong> {data.cita.id}</p>
-			<p><strong>Estado Cita:</strong> {data.cita.estadoCita}</p>
-			<p><strong>Estado Pago:</strong> {data.cita.estadoPago}</p>
-		</div>
+		<dl
+			class="mt-4 grid gap-2 rounded-2xl border border-white/10 bg-black/20 p-4 text-left text-sm"
+		>
+			<div class="flex justify-between gap-4">
+				<dt class="text-white/50">Cita</dt>
+				<dd class="font-mono text-xs">{data.cita.id.slice(0, 8)}</dd>
+			</div>
+			<div class="flex justify-between gap-4">
+				<dt class="text-white/50">Estado de la cita</dt>
+				<dd class="capitalize">{data.cita.estadoCita}</dd>
+			</div>
+			<div class="flex justify-between gap-4">
+				<dt class="text-white/50">Estado del pago</dt>
+				<dd class="capitalize">{data.cita.estadoPago}</dd>
+			</div>
+		</dl>
 	{/if}
 </StatusDial>

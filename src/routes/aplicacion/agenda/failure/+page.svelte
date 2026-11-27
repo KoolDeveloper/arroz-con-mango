@@ -1,16 +1,13 @@
-<script>
-	import { resolve } from '$app/paths';
+<script lang="ts">
 	import StatusDial from '$lib/components/ui/StatusDial.svelte';
 </script>
 
 <StatusDial>
-	<h1 class="mb-4 text-4xl font-bold text-red-600">❌ Pago no completado</h1>
-
-	<p class="text-lg">La transacción fue cancelada o rechazada.</p>
-
-	<h2 class="text-center text-xl font-bold">¿Hubo un problema con tu pago?</h2>
-	<p>
-		Si hubo un problema con tu pago recomendamos esperar 15 minutos para que se libere nuevamente el
-		horario en la agenda.
+	<p class="text-5xl">❌</p>
+	<h1 class="text-4xl text-red-300">Pago no completado</h1>
+	<p class="text-white/70">La transacción fue cancelada o rechazada.</p>
+	<p class="text-sm text-white/50">
+		Puedes intentarlo de nuevo con otro método de pago. Si el horario aparece ocupado, espera unos
+		15 minutos a que se libere en la agenda.
 	</p>
 </StatusDial>
