@@ -1,11 +1,10 @@
 import { env } from '$env/dynamic/private';
 import type { D1Database } from '@cloudflare/workers-types';
 import { drizzle } from 'drizzle-orm/d1';
-import { eq } from 'drizzle-orm';
-import { citas, franjas, pagos } from '$lib/server/db/schema';
+import { and, eq, ne } from 'drizzle-orm';
+import { citas, franjas, pagos, talleres, usuariosTalleres } from '$lib/server/db/schema';
 
 export type { MetodoPago } from '$lib/agenda/payment';
-import type { MetodoPago } from '$lib/agenda/payment';
 
 type PlatformEnv = Record<string, unknown> | undefined;
 
@@ -27,12 +26,47 @@ type ItemPago = {
 	id: string;
 	titulo: string;
 	precioCop: number;
-	citaId: string;
+	/** Qué se está pagando: define las URLs de retorno */
+	tipo: 'cita' | 'taller';
+	/** external_reference (MP) / custom_id (PayPal). Citas: citaId; talleres: "taller:<compraId>" */
+	referencia: string;
 	nombre: string;
 	email: string;
-	desde: number;
-	hasta: number;
+	/** Ventana de validez del checkout (solo citas: dura lo que el bloqueo de franjas) */
+	desde?: number;
+	hasta?: number;
 };
+
+export const PREFIJO_TALLER = 'taller:';
+
+/** Interpreta la referencia externa de un pago: cita (UUID sin prefijo) o compra de taller. */
+export function parsearReferencia(
+	ref: string
+): { tipo: 'cita'; citaId: string } | { tipo: 'taller'; compraId: string } {
+	return ref.startsWith(PREFIJO_TALLER)
+		? { tipo: 'taller', compraId: ref.slice(PREFIJO_TALLER.length) }
+		: { tipo: 'cita', citaId: ref };
+}
+
+function rutasRetorno(tipo: ItemPago['tipo'], baseUrl: string) {
+	if (tipo === 'taller') {
+		const base = `${baseUrl}/aplicacion/talleres/compra`;
+		return {
+			mpSuccess: `${base}/mercadopago`,
+			mpFailure: `${base}/mercadopago`,
+			mpPending: `${base}/mercadopago`,
+			paypalReturn: `${base}/paypal/return`,
+			paypalCancel: `${base}/paypal/cancel`
+		};
+	}
+	return {
+		mpSuccess: `${baseUrl}/aplicacion/agenda/success`,
+		mpFailure: `${baseUrl}/aplicacion/agenda/failure`,
+		mpPending: `${baseUrl}/aplicacion/agenda/pending`,
+		paypalReturn: `${baseUrl}/aplicacion/agenda/paypal/return`,
+		paypalCancel: `${baseUrl}/aplicacion/agenda/paypal/cancel`
+	};
+}
 
 export async function crearPreferenciaMercadoPago(
 	item: ItemPago,
@@ -41,6 +75,16 @@ export async function crearPreferenciaMercadoPago(
 ): Promise<string> {
 	const token = readEnv('MP_ACCESS_TOKEN', platformEnv);
 	if (!token) throw new PagoError('Falta configurar MP_ACCESS_TOKEN en el servidor.');
+
+	const rutas = rutasRetorno(item.tipo, baseUrl);
+	const ventana =
+		item.desde && item.hasta
+			? {
+					expires: true,
+					expiration_date_from: new Date(item.desde).toISOString(),
+					expiration_date_to: new Date(item.hasta).toISOString()
+				}
+			: {};
 
 	const res = await fetch('https://api.mercadopago.com/checkout/preferences', {
 		method: 'POST',
@@ -56,17 +100,15 @@ export async function crearPreferenciaMercadoPago(
 				}
 			],
 			payer: { name: item.nombre, email: item.email },
-			external_reference: item.citaId,
+			external_reference: item.referencia,
 			back_urls: {
-				success: `${baseUrl}/aplicacion/agenda/success`,
-				failure: `${baseUrl}/aplicacion/agenda/failure`,
-				pending: `${baseUrl}/aplicacion/agenda/pending`
+				success: rutas.mpSuccess,
+				failure: rutas.mpFailure,
+				pending: rutas.mpPending
 			},
 			auto_return: 'approved',
 			notification_url: `${baseUrl}/api/webhooks/mercadopago`,
-			expires: true,
-			expiration_date_from: new Date(item.desde).toISOString(),
-			expiration_date_to: new Date(item.hasta).toISOString()
+			...ventana
 		})
 	});
 
@@ -134,20 +176,23 @@ export async function crearOrdenPayPal(
 ): Promise<string> {
 	const valueUsd = copToUsd(item.precioCop, platformEnv);
 	const token = await paypalToken(platformEnv);
+	const rutas = rutasRetorno(item.tipo, baseUrl);
+	// Cada cita es un intento nuevo; una compra de taller se reintenta con la misma referencia
+	const requestId = item.tipo === 'cita' ? item.referencia : crypto.randomUUID();
 
 	const res = await fetch(`${paypalApiBase(platformEnv)}/v2/checkout/orders`, {
 		method: 'POST',
 		headers: {
 			Authorization: `Bearer ${token}`,
 			'Content-Type': 'application/json',
-			'PayPal-Request-Id': item.citaId // idempotencia
+			'PayPal-Request-Id': requestId // idempotencia
 		},
 		body: JSON.stringify({
 			intent: 'CAPTURE',
 			purchase_units: [
 				{
 					reference_id: item.id,
-					custom_id: item.citaId,
+					custom_id: item.referencia,
 					description: item.titulo.slice(0, 127),
 					amount: { currency_code: 'USD', value: valueUsd }
 				}
@@ -160,8 +205,8 @@ export async function crearOrdenPayPal(
 						locale: 'es-ES',
 						shipping_preference: 'NO_SHIPPING',
 						user_action: 'PAY_NOW',
-						return_url: `${baseUrl}/aplicacion/agenda/paypal/return`,
-						cancel_url: `${baseUrl}/aplicacion/agenda/paypal/cancel`
+						return_url: rutas.paypalReturn,
+						cancel_url: rutas.paypalCancel
 					}
 				}
 			}
@@ -284,6 +329,119 @@ export async function liberarCita(d1: D1Database, citaId: string) {
 			.set({ available: true, lockedUntil: null, citaId: null })
 			.where(eq(franjas.citaId, citaId))
 	]);
+}
+
+// ───────────────────────── Talleres ─────────────────────────
+
+type ResultadoPagoTaller = {
+	compraId: string;
+	referencia: string; // ID de MP, o "PAYPAL-<captureId>"
+	monto: number; // en COP
+	status: string;
+};
+
+/** Registra el pago de un taller y, si se aprobó, da acceso al usuario. */
+export async function registrarPagoTaller(d1: D1Database, r: ResultadoPagoTaller) {
+	const db = drizzle(d1);
+
+	await db
+		.insert(pagos)
+		.values({
+			compraTallerId: r.compraId,
+			mercadoPagoId: r.referencia,
+			amount: Math.round(r.monto),
+			status: r.status
+		})
+		.onConflictDoUpdate({ target: pagos.mercadoPagoId, set: { status: r.status } });
+
+	if (r.status === 'approved') {
+		await db
+			.update(usuariosTalleres)
+			.set({ estado: 'aprobado', aprobadoEn: new Date() })
+			.where(eq(usuariosTalleres.id, r.compraId));
+	} else if (r.status === 'rejected' || r.status === 'cancelled') {
+		// Nunca quitamos un acceso ya aprobado por un intento fallido posterior
+		await db
+			.update(usuariosTalleres)
+			.set({ estado: 'rechazado' })
+			.where(and(eq(usuariosTalleres.id, r.compraId), ne(usuariosTalleres.estado, 'aprobado')));
+	}
+}
+
+/** Precio actual del taller de una compra (para validar el monto pagado). */
+export async function precioDeCompra(d1: D1Database, compraId: string) {
+	const [fila] = await drizzle(d1)
+		.select({ precio: talleres.precio, tallerId: talleres.id })
+		.from(usuariosTalleres)
+		.innerJoin(talleres, eq(usuariosTalleres.tallerId, talleres.id))
+		.where(eq(usuariosTalleres.id, compraId));
+	return fila ?? null;
+}
+
+// ───────────────────────── Mercado Pago: verificación ─────────────────────────
+
+type PagoMercadoPago = {
+	id: number;
+	status: string;
+	transaction_amount: number;
+	currency_id?: string;
+	external_reference?: string;
+};
+
+/**
+ * Consulta un pago en la API de MP (fuente de verdad, nunca los query params) y lo registra
+ * como cita o taller según su external_reference. Usado por el webhook y por el retorno.
+ */
+export async function procesarPagoMercadoPago(
+	d1: D1Database,
+	paymentId: string,
+	platformEnv?: PlatformEnv
+) {
+	const token = readEnv('MP_ACCESS_TOKEN', platformEnv);
+	if (!token) throw new PagoError('Falta configurar MP_ACCESS_TOKEN en el servidor.');
+
+	const res = await fetch(
+		`https://api.mercadopago.com/v1/payments/${encodeURIComponent(paymentId)}`,
+		{
+			headers: { Authorization: `Bearer ${token}` }
+		}
+	);
+	if (!res.ok) throw new PagoError('No se pudo verificar el pago en Mercado Pago.');
+
+	const pago: PagoMercadoPago = await res.json();
+	if (!pago.external_reference) return null;
+
+	const ref = parsearReferencia(pago.external_reference);
+
+	if (ref.tipo === 'cita') {
+		await registrarResultadoPago(d1, {
+			citaId: ref.citaId,
+			referencia: String(pago.id),
+			monto: pago.transaction_amount,
+			status: pago.status
+		});
+		return { ...ref, status: pago.status };
+	}
+
+	const compra = await precioDeCompra(d1, ref.compraId);
+	if (!compra) return null;
+
+	let status = pago.status;
+	if (
+		status === 'approved' &&
+		(pago.currency_id !== 'COP' || pago.transaction_amount < compra.precio)
+	) {
+		console.error('Monto de MP no coincide con el precio del taller', pago, compra);
+		status = 'monto_invalido';
+	}
+
+	await registrarPagoTaller(d1, {
+		compraId: ref.compraId,
+		referencia: String(pago.id),
+		monto: pago.transaction_amount,
+		status
+	});
+	return { ...ref, tallerId: compra.tallerId, status };
 }
 
 export class PagoError extends Error {}

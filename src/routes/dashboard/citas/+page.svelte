@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { formatearPrecio } from '$lib/formato';
 	import { enhance } from '$app/forms';
 	import type { TipoCitaSelect } from '$lib/server/db/schema';
 
@@ -8,10 +9,10 @@
 	let citaEditandoId = $state<string | null>(null);
 </script>
 
-<h1 class="mb-6 text-3xl font-bold text-gray-800">Gestión de Citas y Catálogo</h1>
+<h1 class="mb-6 text-4xl text-accent md:text-5xl">Gestión de Citas y Catálogo</h1>
 
 {#if form?.error}
-	<div class="mb-6 rounded bg-red-100 p-4 text-sm text-red-700">{form.error}</div>
+	<div class="alert alert-error mb-6">{form.error}</div>
 {/if}
 
 <!-- SECCIÓN 1: CRUD DE TIPOS DE CITA -->
@@ -25,30 +26,28 @@
 				servicioEditando = null;
 			};
 		}}
-		class="space-y-4 rounded-lg bg-white p-6 shadow"
+		class="panel space-y-4"
 	>
-		<h2 class="text-xl font-semibold">
+		<h2 class="text-2xl text-white">
 			{servicioEditando ? 'Editar Servicio' : 'Crear Tipo de Cita'}
 		</h2>
 		<input type="hidden" name="id" value={servicioEditando?.id ?? ''} />
 
 		<div>
-			<label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+			<label for="nombre" class="field-label">Nombre</label>
 			<input
 				id="nombre"
 				type="text"
 				name="nombre"
 				required
 				value={servicioEditando?.nombre ?? ''}
-				class="mt-1 w-full rounded border p-2"
+				class="field"
 			/>
 		</div>
 
 		<div class="grid grid-cols-2 gap-3">
 			<div>
-				<label for="duracionFranjas" class="block text-sm font-medium text-gray-700">
-					Duración (Horas)
-				</label>
+				<label for="duracionFranjas" class="field-label"> Duración (Horas) </label>
 				<input
 					id="duracionFranjas"
 					type="number"
@@ -56,11 +55,11 @@
 					min="1"
 					required
 					value={servicioEditando?.duracionFranjas ?? 1}
-					class="mt-1 w-full rounded border p-2"
+					class="field"
 				/>
 			</div>
 			<div>
-				<label for="precio" class="block text-sm font-medium text-gray-700">Precio (COP)</label>
+				<label for="precio" class="field-label">Precio (COP)</label>
 				<input
 					id="precio"
 					type="number"
@@ -69,31 +68,31 @@
 					step="1000"
 					required
 					value={servicioEditando?.precio ?? ''}
-					class="mt-1 w-full rounded border p-2"
+					class="field"
 				/>
 			</div>
 		</div>
 
 		<div>
-			<label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
+			<label for="descripcion" class="field-label">Descripción</label>
 			<input
 				id="descripcion"
 				type="text"
 				name="descripcion"
 				value={servicioEditando?.descripcion ?? ''}
-				class="mt-1 w-full rounded border p-2"
+				class="field"
 			/>
 		</div>
 
 		<div class="flex gap-2">
-			<button type="submit" class="flex-1 rounded bg-primary py-2 font-medium text-white">
+			<button type="submit" class="btn-primary btn-sm flex-1">
 				{servicioEditando ? 'Actualizar' : 'Crear Servicio'}
 			</button>
 			{#if servicioEditando}
 				<button
 					type="button"
 					onclick={() => (servicioEditando = null)}
-					class="rounded bg-gray-200 px-3 text-sm"
+					class="btn-secondary btn-sm"
 				>
 					Cancelar
 				</button>
@@ -101,11 +100,11 @@
 		</div>
 	</form>
 
-	<div class="rounded-lg bg-white p-6 shadow lg:col-span-2">
-		<h2 class="mb-4 text-xl font-semibold">Catálogo de Servicios</h2>
+	<div class="panel lg:col-span-2">
+		<h2 class="mb-4 text-2xl text-white">Catálogo de Servicios</h2>
 		<div class="overflow-x-auto">
-			<table class="w-full text-left text-sm">
-				<thead class="bg-gray-100 text-gray-600">
+			<table class="data-table">
+				<thead>
 					<tr>
 						<th class="p-3">Servicio</th>
 						<th class="p-3">Duración</th>
@@ -116,48 +115,40 @@
 				</thead>
 				<tbody>
 					{#each data.servicios as s (s.id)}
-						<tr class="border-b">
+						<tr>
 							<td class="p-3">
 								<p class="font-medium">{s.nombre}</p>
 								{#if s.descripcion}
-									<p class="text-xs text-gray-500">{s.descripcion}</p>
+									<p class="text-xs text-white/50">{s.descripcion}</p>
 								{/if}
 							</td>
 							<td class="p-3">{s.duracionFranjas}h</td>
-							<td class="p-3 font-semibold">${s.precio.toLocaleString('es-CO')}</td>
+							<td class="p-3 font-semibold">{formatearPrecio(s.precio)}</td>
 							<td class="p-3">
-								<span
-									class="rounded px-2 py-1 text-xs font-semibold {s.activo
-										? 'bg-green-100 text-green-800'
-										: 'bg-gray-200 text-gray-700'}"
-								>
+								<span class="badge {s.activo ? 'badge-ok' : 'badge-muted'}">
 									{s.activo ? 'Activo' : 'Oculto'}
 								</span>
 							</td>
 							<td class="flex gap-3 p-3">
-								<button
-									type="button"
-									onclick={() => (servicioEditando = s)}
-									class="text-blue-600 hover:underline"
-								>
+								<button type="button" onclick={() => (servicioEditando = s)} class="link-action">
 									Editar
 								</button>
 								<form method="POST" action="?/toggleServicio" use:enhance>
 									<input type="hidden" name="id" value={s.id} />
 									<input type="hidden" name="activo" value={String(s.activo)} />
-									<button type="submit" class="text-amber-600 hover:underline">
+									<button type="submit" class="link-action">
 										{s.activo ? 'Ocultar' : 'Activar'}
 									</button>
 								</form>
 								<form method="POST" action="?/eliminarServicio" use:enhance>
 									<input type="hidden" name="id" value={s.id} />
-									<button type="submit" class="text-red-600 hover:underline">Eliminar</button>
+									<button type="submit" class="link-danger">Eliminar</button>
 								</form>
 							</td>
 						</tr>
 					{:else}
 						<tr>
-							<td colspan="5" class="p-4 text-center text-gray-500">
+							<td colspan="5" class="p-4 text-center text-white/50">
 								No hay tipos de cita registrados.
 							</td>
 						</tr>
@@ -169,11 +160,11 @@
 </div>
 
 <!-- SECCIÓN 2: CRUD DE CITAS AGENDADAS -->
-<div class="rounded-lg bg-white p-6 shadow">
-	<h2 class="mb-4 text-xl font-semibold">Historial de Citas</h2>
+<div class="panel">
+	<h2 class="mb-4 text-2xl text-white">Historial de Citas</h2>
 	<div class="overflow-x-auto">
-		<table class="w-full text-left text-sm">
-			<thead class="bg-gray-100 text-gray-600">
+		<table class="data-table">
+			<thead>
 				<tr>
 					<th class="p-3">Cliente</th>
 					<th class="p-3">Servicio</th>
@@ -185,11 +176,11 @@
 			</thead>
 			<tbody>
 				{#each data.citas as c (c.id)}
-					<tr class="border-b">
+					<tr>
 						<td class="p-3">
 							<p class="font-medium">{c.pacienteNombre ?? c.pacienteId.substring(0, 8)}</p>
 							{#if c.pacienteEmail}
-								<p class="text-xs text-gray-500">{c.pacienteEmail}</p>
+								<p class="text-xs text-white/50">{c.pacienteEmail}</p>
 							{/if}
 						</td>
 						<td class="p-3">{c.tipoNombre ?? c.tipoCitaId}</td>
@@ -212,7 +203,7 @@
 										name="estadoCita"
 										aria-label="Estado de la cita"
 										value={c.estadoCita}
-										class="rounded border bg-white p-1.5"
+										class="field field-sm w-auto"
 									>
 										<option value="pendiente">Pendiente</option>
 										<option value="confirmada">Confirmada</option>
@@ -222,7 +213,7 @@
 										name="estadoPago"
 										aria-label="Estado del pago"
 										value={c.estadoPago}
-										class="rounded border bg-white p-1.5"
+										class="field field-sm w-auto"
 									>
 										<option value="pendiente">Pago Pendiente</option>
 										<option value="aprobado">Pago Aprobado</option>
@@ -234,15 +225,13 @@
 										aria-label="Notas del cliente"
 										value={c.notasCliente ?? ''}
 										placeholder="Notas..."
-										class="rounded border p-1.5"
+										class="field field-sm w-auto"
 									/>
-									<button type="submit" class="rounded bg-green-600 px-3 py-1.5 text-white">
-										Guardar
-									</button>
+									<button type="submit" class="btn-primary btn-sm"> Guardar </button>
 									<button
 										type="button"
 										onclick={() => (citaEditandoId = null)}
-										class="px-2 text-gray-500"
+										class="px-2 text-white/50 hover:text-white"
 									>
 										Cancelar
 									</button>
@@ -251,34 +240,30 @@
 						{:else}
 							<td class="p-3">
 								<span
-									class="rounded px-2 py-1 text-xs font-semibold
-									{c.estadoCita === 'pendiente' ? 'bg-yellow-100 text-yellow-800' : ''}
-									{c.estadoCita === 'confirmada' ? 'bg-green-100 text-green-800' : ''}
-									{c.estadoCita === 'cancelada' ? 'bg-red-100 text-red-800' : ''}"
+									class="badge
+									{c.estadoCita === 'pendiente' ? 'badge-warn' : ''}
+									{c.estadoCita === 'confirmada' ? 'badge-ok' : ''}
+									{c.estadoCita === 'cancelada' ? 'badge-error' : ''}"
 								>
 									{c.estadoCita}
 								</span>
 							</td>
 							<td class="p-3">{c.estadoPago}</td>
-							<td class="p-3 text-gray-500">{c.notasCliente ?? '-'}</td>
+							<td class="p-3 text-white/50">{c.notasCliente ?? '-'}</td>
 							<td class="flex gap-3 p-3">
-								<button
-									type="button"
-									onclick={() => (citaEditandoId = c.id)}
-									class="text-blue-600 hover:underline"
-								>
+								<button type="button" onclick={() => (citaEditandoId = c.id)} class="link-action">
 									Editar
 								</button>
 								<form method="POST" action="?/eliminarCita" use:enhance>
 									<input type="hidden" name="id" value={c.id} />
-									<button type="submit" class="text-red-600 hover:underline">Borrar</button>
+									<button type="submit" class="link-danger">Borrar</button>
 								</form>
 							</td>
 						{/if}
 					</tr>
 				{:else}
 					<tr>
-						<td colspan="6" class="p-4 text-center text-gray-500">No hay citas registradas.</td>
+						<td colspan="6" class="p-4 text-center text-white/50">No hay citas registradas.</td>
 					</tr>
 				{/each}
 			</tbody>

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { TipoCitaSelect } from '$lib/server/db/schema';
-	import { formatearPrecio, type Bloque } from '$lib/agenda/slots';
+	import type { Bloque } from '$lib/agenda/slots';
+	import { formatearPrecio } from '$lib/formato';
 	import { NOMBRE_METODO, sugerirMetodo, type MetodoPago } from '$lib/agenda/payment';
 	import ContactFields from './ContactFields.svelte';
 	import PaymentMethodPicker from './PaymentMethodPicker.svelte';
@@ -42,11 +43,7 @@
 		/>
 	</div>
 
-	<button
-		type="submit"
-		disabled={enviando}
-		class="mt-8 w-full rounded-full bg-accent py-4 font-semibold text-black shadow-[0_10px_40px_-10px_rgba(255,172,31,0.6)] transition hover:-translate-y-0.5 hover:bg-white disabled:translate-y-0 disabled:opacity-50"
-	>
+	<button type="submit" disabled={enviando} class="btn-primary mt-8 w-full py-4 whitespace-normal">
 		{#if enviando}
 			Redirigiendo a {NOMBRE_METODO[metodoPago]}…
 		{:else}

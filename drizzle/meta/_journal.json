@@ -15,6 +15,20 @@
       "when": 1792249478412,
       "tag": "0001_dark_karen_page",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1795878731484,
+      "tag": "0002_usuarios_talleres_auth",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1795881835156,
+      "tag": "0003_login_con_codigo",
+      "breakpoints": true
     }
   ]
 }

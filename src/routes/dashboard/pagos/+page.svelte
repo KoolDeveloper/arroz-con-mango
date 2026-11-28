@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { formatearPrecio } from '$lib/formato';
 	import { enhance } from '$app/forms';
 	import type { PagoSelect } from '$lib/server/db/schema';
 
@@ -7,10 +8,10 @@
 	let pagoEditando = $state<PagoSelect | null>(null);
 </script>
 
-<h1 class="mb-6 text-3xl font-bold text-gray-800">Gestión de Pagos y Finanzas</h1>
+<h1 class="mb-6 text-4xl text-accent md:text-5xl">Gestión de Pagos y Finanzas</h1>
 
 {#if form?.error}
-	<div class="mb-6 rounded bg-red-100 p-4 text-sm text-red-700">{form.error}</div>
+	<div class="alert alert-error mb-6">{form.error}</div>
 {/if}
 
 <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -24,22 +25,16 @@
 				pagoEditando = null;
 			};
 		}}
-		class="h-fit space-y-4 rounded-lg bg-white p-6 shadow"
+		class="panel h-fit space-y-4"
 	>
-		<h2 class="text-xl font-semibold">
+		<h2 class="text-2xl text-white">
 			{pagoEditando ? 'Editar Transacción' : 'Registrar Pago Manual'}
 		</h2>
 		<input type="hidden" name="id" value={pagoEditando?.id ?? ''} />
 
 		<div>
-			<label for="citaId" class="block text-sm font-medium text-gray-700">Cita Asociada</label>
-			<select
-				id="citaId"
-				name="citaId"
-				required
-				value={pagoEditando?.citaId ?? ''}
-				class="mt-1 w-full rounded border bg-white p-2 text-sm"
-			>
+			<label for="citaId" class="field-label">Cita Asociada</label>
+			<select id="citaId" name="citaId" required value={pagoEditando?.citaId ?? ''} class="field">
 				<option value="" disabled>Selecciona una cita...</option>
 				{#each data.citas as c (c.id)}
 					<option value={c.id}>Cita {c.id.substring(0, 8)} ({c.estadoCita})</option>
@@ -48,22 +43,20 @@
 		</div>
 
 		<div>
-			<label for="mercadoPagoId" class="block text-sm font-medium text-gray-700">
-				Referencia (MP o Transferencia)
-			</label>
+			<label for="mercadoPagoId" class="field-label"> Referencia (MP o Transferencia) </label>
 			<input
 				id="mercadoPagoId"
 				type="text"
 				name="mercadoPagoId"
 				placeholder="Ej. MP-123456"
 				value={pagoEditando?.mercadoPagoId ?? ''}
-				class="mt-1 w-full rounded border p-2"
+				class="field"
 			/>
 		</div>
 
 		<div class="grid grid-cols-2 gap-3">
 			<div>
-				<label for="amount" class="block text-sm font-medium text-gray-700">Monto (COP)</label>
+				<label for="amount" class="field-label">Monto (COP)</label>
 				<input
 					id="amount"
 					type="number"
@@ -71,17 +64,12 @@
 					min="1"
 					required
 					value={pagoEditando?.amount ?? ''}
-					class="mt-1 w-full rounded border p-2"
+					class="field"
 				/>
 			</div>
 			<div>
-				<label for="status" class="block text-sm font-medium text-gray-700">Estado</label>
-				<select
-					id="status"
-					name="status"
-					value={pagoEditando?.status ?? 'aprobado'}
-					class="mt-1 w-full rounded border bg-white p-2"
-				>
+				<label for="status" class="field-label">Estado</label>
+				<select id="status" name="status" value={pagoEditando?.status ?? 'aprobado'} class="field">
 					<option value="aprobado">Aprobado</option>
 					<option value="pendiente">Pendiente</option>
 					<option value="rechazado">Rechazado</option>
@@ -90,15 +78,11 @@
 		</div>
 
 		<div class="flex gap-2">
-			<button type="submit" class="flex-1 rounded bg-primary py-2 font-medium text-white">
+			<button type="submit" class="btn-primary btn-sm flex-1">
 				{pagoEditando ? 'Actualizar Pago' : 'Registrar Pago'}
 			</button>
 			{#if pagoEditando}
-				<button
-					type="button"
-					onclick={() => (pagoEditando = null)}
-					class="rounded bg-gray-200 px-3 text-sm"
-				>
+				<button type="button" onclick={() => (pagoEditando = null)} class="btn-secondary btn-sm">
 					Cancelar
 				</button>
 			{/if}
@@ -106,11 +90,11 @@
 	</form>
 
 	<!-- Tabla de Pagos -->
-	<div class="rounded-lg bg-white p-6 shadow lg:col-span-2">
-		<h2 class="mb-4 text-xl font-semibold">Transacciones Registradas</h2>
+	<div class="panel lg:col-span-2">
+		<h2 class="mb-4 text-2xl text-white">Transacciones Registradas</h2>
 		<div class="overflow-x-auto">
-			<table class="w-full text-left text-sm">
-				<thead class="bg-gray-100 text-gray-600">
+			<table class="data-table">
+				<thead>
 					<tr>
 						<th class="p-3">Referencia</th>
 						<th class="p-3">Cita ID</th>
@@ -121,37 +105,39 @@
 				</thead>
 				<tbody>
 					{#each data.pagos as p (p.id)}
-						<tr class="border-b">
+						<tr>
 							<td class="p-3 font-mono text-xs">{p.mercadoPagoId}</td>
-							<td class="p-3 font-mono text-xs">{p.citaId.substring(0, 8)}...</td>
-							<td class="p-3 font-semibold">${p.amount.toLocaleString('es-CO')}</td>
+							<td class="p-3 font-mono text-xs"
+								>{p.citaId
+									? `${p.citaId.substring(0, 8)}...`
+									: p.compraTallerId
+										? 'Taller'
+										: '—'}</td
+							>
+							<td class="p-3 font-semibold">{formatearPrecio(p.amount)}</td>
 							<td class="p-3">
 								<span
-									class="rounded px-2 py-1 text-xs font-semibold
-									{p.status === 'aprobado' || p.status === 'approved' ? 'bg-green-100 text-green-800' : ''}
-									{p.status === 'pendiente' || p.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ''}
-									{p.status === 'rechazado' || p.status === 'rejected' ? 'bg-red-100 text-red-800' : ''}"
+									class="badge
+									{p.status === 'aprobado' || p.status === 'approved' ? 'badge-ok' : ''}
+									{p.status === 'pendiente' || p.status === 'pending' ? 'badge-warn' : ''}
+									{p.status === 'rechazado' || p.status === 'rejected' ? 'badge-error' : ''}"
 								>
 									{p.status}
 								</span>
 							</td>
 							<td class="flex gap-3 p-3">
-								<button
-									type="button"
-									onclick={() => (pagoEditando = p)}
-									class="text-blue-600 hover:underline"
-								>
+								<button type="button" onclick={() => (pagoEditando = p)} class="link-action">
 									Editar
 								</button>
 								<form method="POST" action="?/eliminarPago" use:enhance>
 									<input type="hidden" name="id" value={p.id} />
-									<button type="submit" class="text-red-600 hover:underline">Eliminar</button>
+									<button type="submit" class="link-danger">Eliminar</button>
 								</form>
 							</td>
 						</tr>
 					{:else}
 						<tr>
-							<td colspan="5" class="p-4 text-center text-gray-500">
+							<td colspan="5" class="p-4 text-center text-white/50">
 								No hay transacciones registradas.
 							</td>
 						</tr>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { TipoCitaSelect } from '$lib/server/db/schema';
-	import { formatearPrecio } from '$lib/agenda/slots';
+	import { formatearPrecio } from '$lib/formato';
 	import StepLabel from './StepLabel.svelte';
 
 	type Props = { tipos: TipoCitaSelect[]; value: string; onselect: (id: string) => void };

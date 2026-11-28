@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/d1';
 import { eq, desc } from 'drizzle-orm';
-import { citas, tiposCita, pacientes, franjas } from '$lib/server/db/schema';
+import { citas, tiposCita, usuarios, franjas } from '$lib/server/db/schema';
 import { fail } from '@sveltejs/kit';
 import type { EstadoCita, EstadoPago } from '$lib/types/agenda';
 
@@ -9,32 +9,30 @@ export const load = async ({ platform }) => {
 	if (!d1) throw new Error('Base de datos no conectada');
 	const db = drizzle(d1);
 
-	const [listaCitas, catalogo, listaPacientes] = await Promise.all([
+	const [listaCitas, catalogo] = await Promise.all([
 		db
 			.select({
 				id: citas.id,
-				pacienteId: citas.pacienteId,
+				pacienteId: citas.usuarioId,
 				tipoCitaId: citas.tipoCitaId,
 				estadoCita: citas.estadoCita,
 				estadoPago: citas.estadoPago,
 				notasCliente: citas.notasCliente,
 				creadoEn: citas.creadoEn,
-				pacienteNombre: pacientes.nombre,
-				pacienteEmail: pacientes.email,
+				pacienteNombre: usuarios.nombre,
+				pacienteEmail: usuarios.email,
 				tipoNombre: tiposCita.nombre
 			})
 			.from(citas)
-			.leftJoin(pacientes, eq(citas.pacienteId, pacientes.id))
+			.leftJoin(usuarios, eq(citas.usuarioId, usuarios.id))
 			.leftJoin(tiposCita, eq(citas.tipoCitaId, tiposCita.id))
 			.orderBy(desc(citas.creadoEn)),
-		db.select().from(tiposCita),
-		db.select().from(pacientes)
+		db.select().from(tiposCita)
 	]);
 
 	return {
 		citas: listaCitas,
-		servicios: catalogo,
-		pacientes: listaPacientes
+		servicios: catalogo
 	};
 };
 
@@ -125,10 +123,7 @@ export const actions = {
 		if (estadoCita === 'cancelada') {
 			await db.batch([
 				updateCitaQuery,
-				db
-					.update(franjas)
-					.set({ available: true, citaId: null })
-					.where(eq(franjas.citaId, id))
+				db.update(franjas).set({ available: true, citaId: null }).where(eq(franjas.citaId, id))
 			]);
 		} else {
 			await updateCitaQuery;
@@ -148,10 +143,7 @@ export const actions = {
 		if (!id) return fail(400, { error: 'ID de cita requerido' });
 
 		await db.batch([
-			db
-				.update(franjas)
-				.set({ available: true, citaId: null })
-				.where(eq(franjas.citaId, id)),
+			db.update(franjas).set({ available: true, citaId: null }).where(eq(franjas.citaId, id)),
 			db.delete(citas).where(eq(citas.id, id))
 		]);
 

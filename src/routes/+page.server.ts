@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/d1';
 import { eq, and, or, isNull, lt, gt, inArray, asc } from 'drizzle-orm';
-import { franjas, tiposCita, pacientes, citas } from '$lib/server/db/schema';
+import { franjas, tiposCita, usuarios, citas } from '$lib/server/db/schema';
 import { fail, redirect } from '@sveltejs/kit';
 import {
 	crearOrdenPayPal,
@@ -127,13 +127,13 @@ export const actions = {
 
 			// 3. Upsert del Paciente
 			const [paciente] = await db
-				.insert(pacientes)
+				.insert(usuarios)
 				.values({ nombre, email, telefono })
 				.onConflictDoUpdate({
-					target: pacientes.email,
+					target: usuarios.email,
 					set: { nombre, telefono }
 				})
-				.returning({ id: pacientes.id });
+				.returning({ id: usuarios.id });
 
 			// 4. Crear Cita y Bloquear Franjas (15 minutos)
 			const nuevaCitaId = crypto.randomUUID();
@@ -142,7 +142,7 @@ export const actions = {
 			await db.batch([
 				db.insert(citas).values({
 					id: nuevaCitaId,
-					pacienteId: paciente.id,
+					usuarioId: paciente.id,
 					tipoCitaId: servicio.id,
 					estadoCita: 'pendiente',
 					estadoPago: 'pendiente',
@@ -160,7 +160,8 @@ export const actions = {
 				id: servicio.id,
 				titulo: `${servicio.nombre} (${franjasEnDb[0].date} ${franjasEnDb[0].startTime})`,
 				precioCop: servicio.precio,
-				citaId: nuevaCitaId,
+				tipo: 'cita' as const,
+				referencia: nuevaCitaId,
 				nombre,
 				email,
 				desde: ahora,

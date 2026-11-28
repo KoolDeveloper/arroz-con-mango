@@ -176,3 +176,103 @@ textarea {
 		transform: none;
 	}
 }
+
+/* ───── Videos de YouTube embebidos en el contenido de los talleres ───── */
+.video-embed {
+	position: relative;
+	margin: 1.5em 0;
+	aspect-ratio: 16 / 9;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 1rem;
+	background: #000;
+}
+.video-embed iframe {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+/* ───── Sistema visual compartido (basado en la landing) ───── */
+@layer components {
+	/* Botones: mismos que el Hero ("Reservar sesión" / "Conoce mi historia") */
+	.btn-primary {
+		@apply inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-center text-sm font-semibold tracking-wider whitespace-nowrap text-black uppercase shadow-[0_10px_40px_-10px_rgba(255,172,31,0.7)] transition duration-300 hover:-translate-y-0.5 hover:bg-white disabled:pointer-events-none disabled:opacity-50;
+	}
+	.btn-secondary {
+		@apply inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-black/30 px-6 py-3 text-center text-sm font-semibold tracking-wider whitespace-nowrap text-white uppercase transition duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent disabled:pointer-events-none disabled:opacity-50;
+	}
+	.btn-sm {
+		@apply px-4 py-2 text-xs;
+	}
+
+	/* Acciones de texto en tablas */
+	.link-action {
+		@apply text-accent transition hover:text-white hover:underline;
+	}
+	.link-danger {
+		@apply text-red-300 transition hover:text-red-200 hover:underline;
+	}
+
+	/* Encabezado de sección: kicker verde + título en acento (como "Agenda tu sesión") */
+	.kicker {
+		@apply text-xs font-semibold tracking-[0.3em] text-secondary uppercase;
+	}
+
+	/* Panel más compacto que .glass-card, para el dashboard y bloques secundarios */
+	.panel {
+		@apply rounded-3xl border border-white/10 bg-white/5 p-5 md:p-6;
+	}
+
+	.alert {
+		@apply rounded-2xl border px-4 py-3 text-sm;
+	}
+	.alert-error {
+		@apply border-red-400/30 bg-red-500/10 text-red-200;
+	}
+	.alert-ok {
+		@apply border-green-400/30 bg-green-500/10 text-green-200;
+	}
+	.alert-warn {
+		@apply border-yellow-400/30 bg-yellow-500/10 text-yellow-100;
+	}
+
+	.badge {
+		@apply inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap;
+	}
+	.badge-ok {
+		@apply bg-secondary/20 text-secondary;
+	}
+	.badge-warn {
+		@apply bg-accent/20 text-accent;
+	}
+	.badge-error {
+		@apply bg-red-500/20 text-red-300;
+	}
+	.badge-muted {
+		@apply bg-white/10 text-white/60;
+	}
+
+	.data-table {
+		@apply w-full text-left text-sm text-white/80;
+	}
+	.data-table th {
+		@apply border-b border-white/10 p-3 text-xs font-semibold tracking-wider text-white/50 uppercase;
+	}
+	.data-table td {
+		@apply border-b border-white/5 p-3 align-top;
+	}
+	.data-table tbody tr {
+		@apply transition-colors hover:bg-white/[0.03];
+	}
+
+	.field-sm {
+		@apply rounded-xl px-3 py-1.5 text-sm;
+	}
+	/* Controles nativos (fecha, hora, select) en oscuro */
+	.field {
+		color-scheme: dark;
+	}
+}

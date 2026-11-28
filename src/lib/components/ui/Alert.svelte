@@ -1,10 +1,8 @@
 <script lang="ts">
-	let { message }: { message: string } = $props();
+	type Props = { message: string; tone?: 'error' | 'ok' | 'warn' };
+	let { message, tone = 'error' }: Props = $props();
 </script>
 
-<div
-	role="alert"
-	class="mb-6 rounded-2xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
->
+<div role={tone === 'error' ? 'alert' : 'status'} class="alert alert-{tone} mb-6">
 	{message}
 </div>

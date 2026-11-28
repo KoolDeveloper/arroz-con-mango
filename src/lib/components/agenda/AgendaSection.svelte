@@ -9,6 +9,7 @@
 	import Prisma from '$lib/components/ui/Prisma.svelte';
 	import Footer from '$lib/components/ui/Footer.svelte';
 	import Alert from '$lib/components/ui/Alert.svelte';
+	import SectionHeader from '$lib/components/ui/SectionHeader.svelte';
 	import SectionLogo from '$lib/components/landing/SectionLogo.svelte';
 	import ServicePicker from './ServicePicker.svelte';
 	import DatePicker from './DatePicker.svelte';
@@ -69,15 +70,14 @@
 	<div class="grid w-full max-w-3xl *:col-start-1 *:row-start-1">
 		{#if paso === 'horario' || !bloque || !servicio}
 			<div in:fly={entrada} out:fly={salida} class="glass-card w-full text-white">
-				<header class="mb-8 text-center">
-					<p class="text-xs font-semibold tracking-[0.3em] text-secondary uppercase">
-						Reserva online
-					</p>
-					<h2 class="mt-2 text-4xl text-accent md:text-5xl">Agenda tu sesión</h2>
-					<p class="mt-2 text-sm text-white/60">
-						Elige el tipo de sesión, el día y la hora que mejor te funcionen.
-					</p>
-				</header>
+				<div class="mb-8">
+					<SectionHeader
+						nivel="h2"
+						kicker="Reserva online"
+						titulo="Agenda tu sesión"
+						subtitulo="Elige el tipo de sesión, el día y la hora que mejor te funcionen."
+					/>
+				</div>
 
 				{#if error}<Alert message={error} />{/if}
 

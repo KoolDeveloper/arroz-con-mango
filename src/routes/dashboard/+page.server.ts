@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/d1';
 import { eq, desc } from 'drizzle-orm';
-import { citas, franjas, pacientes, pagos } from '$lib/server/db/schema';
+import { citas, franjas, usuarios, pagos } from '$lib/server/db/schema';
 
 export const load = async ({ platform }) => {
 	const d1 = platform?.env?.therapist_db;
@@ -11,7 +11,7 @@ export const load = async ({ platform }) => {
 	const [todasLasCitas, franjasDisponibles, totalPacientes, pagosRecientes] = await Promise.all([
 		db.select().from(citas).orderBy(desc(citas.creadoEn)).limit(5),
 		db.select().from(franjas).where(eq(franjas.available, true)),
-		db.select().from(pacientes),
+		db.select().from(usuarios),
 		db.select().from(pagos).limit(10)
 	]);
 

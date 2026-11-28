@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { TipoCitaSelect } from '$lib/server/db/schema';
-	import { formatearFecha, formatearPrecio, type Bloque } from '$lib/agenda/slots';
+	import { formatearFecha, type Bloque } from '$lib/agenda/slots';
+	import { formatearPrecio } from '$lib/formato';
 
 	type Props = { servicio: TipoCitaSelect; fecha: string; bloque: Bloque };
 	let { servicio, fecha, bloque }: Props = $props();

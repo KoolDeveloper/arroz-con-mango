@@ -49,5 +49,3 @@ export function formatearFecha(iso: string) {
 		largo: fmt({ weekday: 'long', day: 'numeric', month: 'long' })
 	};
 }
-
-export const formatearPrecio = (cop: number) => `$${cop.toLocaleString('es-CO')}`;

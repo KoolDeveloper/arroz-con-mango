@@ -10,3 +10,13 @@ PAYPAL_CLIENT_SECRET=
 PAYPAL_ENV=sandbox
 # Pesos colombianos por 1 USD, usado para convertir el precio (PayPal no acepta COP)
 PAYPAL_COP_USD_RATE=4000
+
+# Login con Google (OAuth 2.0 · Google Cloud Console > Credenciales)
+# URI de redirección autorizada: <PUBLIC_URL>/auth/google/callback
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+# Correos con el código de acceso (login sin contraseña) vía Resend · gratis: 3.000/mes, 100/día
+RESEND_API_KEY=
+# Remitente de un dominio verificado en Resend
+EMAIL_FROM=Alejo Mentor <no-reply@alejopina.com>

@@ -33,22 +33,16 @@
 				Vuelve a elegir <span class="animate-pulse text-accent duration-200">tu vida</span>
 			</h1>
 			<p data-intro="text" class="max-w-xl text-lg text-gray-100 opacity-0 sm:text-xl">
-				Acompaño a personas que quieren recuperar su paz, tomar el control, ordenar sus
-				emociones y reconstruir su camino hacia una vida más plena, desde mi experiencia con el juego.
+				Acompaño a personas que quieren recuperar su paz, tomar el control, ordenar sus emociones y
+				reconstruir su camino hacia una vida más plena, desde mi experiencia con el juego.
 			</p>
 		</div>
 
 		<div data-intro="buttons" class="flex flex-wrap gap-3 opacity-0">
-			<button
-				onclick={onReservar}
-				class="flex-1 rounded-full bg-accent px-6 py-3 text-center text-sm font-semibold tracking-wider whitespace-nowrap text-black uppercase shadow-[0_10px_40px_-10px_rgba(255,172,31,0.7)] transition duration-300 hover:-translate-y-0.5 hover:bg-white sm:flex-none"
-			>
+			<button onclick={onReservar} class="btn-primary flex-1 sm:flex-none">
 				Reservar sesión
 			</button>
-			<button
-				onclick={onHistoria}
-				class="flex-1 rounded-full border border-white/30 bg-black/30 px-6 py-3 text-center text-sm font-semibold tracking-wider whitespace-nowrap text-white uppercase transition duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent sm:flex-none"
-			>
+			<button onclick={onHistoria} class="btn-secondary flex-1 sm:flex-none">
 				Conoce mi historia
 			</button>
 		</div>

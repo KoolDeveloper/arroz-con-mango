@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { readEnv, registrarResultadoPago } from '$lib/server/payments';
+import { procesarPagoMercadoPago, readEnv } from '$lib/server/payments';
 
 export const POST = async ({ request, platform, url }) => {
 	const d1 = platform?.env?.therapist_db;
@@ -16,31 +16,13 @@ export const POST = async ({ request, platform, url }) => {
 		return json({ received: true });
 	}
 
-	// Consultamos la API de Mercado Pago para verificar que el pago sea auténtico
-	const mpRes = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
-		headers: { Authorization: `Bearer ${mpToken}` }
-	});
-
-	if (!mpRes.ok) {
+	// Se consulta la API de MP para verificar el pago (cita o taller según external_reference)
+	try {
+		await procesarPagoMercadoPago(d1, String(paymentId), platform?.env);
+	} catch (err) {
+		console.error('Error procesando webhook de MP:', err);
 		return json({ error: 'No se pudo verificar el pago en MP' }, { status: 400 });
 	}
-
-	const paymentData: {
-		id: number;
-		status: string;
-		transaction_amount: number;
-		external_reference?: string;
-	} = await mpRes.json();
-
-	const citaId = paymentData.external_reference;
-	if (!citaId) return json({ received: true });
-
-	await registrarResultadoPago(d1, {
-		citaId,
-		referencia: String(paymentData.id),
-		monto: paymentData.transaction_amount,
-		status: paymentData.status
-	});
 
 	return json({ success: true });
 };
