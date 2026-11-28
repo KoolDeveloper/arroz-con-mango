@@ -33,7 +33,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<title>Alejo Mentor · Sal del juego, vuelve a elegir tu vida</title>
+	<title>Alejo Mentor · Vuelve a elegir tu vida</title>
 	<meta
 		name="description"
 		content="Mentoría y acompañamiento para salir de la ludopatía: recupera el control, ordena tus emociones y vuelve a elegir tu vida."

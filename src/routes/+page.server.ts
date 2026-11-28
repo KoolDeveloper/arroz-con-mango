@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/d1';
-import { eq, and, or, isNull, lt, gt, inArray, asc } from 'drizzle-orm';
-import { franjas, tiposCita, usuarios, citas } from '$lib/server/db/schema';
+import { eq, and, or, isNull, lt, gt, inArray, asc, desc } from 'drizzle-orm';
+import { franjas, tiposCita, usuarios, citas, talleres } from '$lib/server/db/schema';
 import { fail, redirect } from '@sveltejs/kit';
 import {
 	crearOrdenPayPal,
@@ -32,7 +32,7 @@ export const load = async ({ platform }) => {
 		hour12: false
 	}).format(new Date());
 
-	const [franjasDisponibles, serviciosActivos] = await Promise.all([
+	const [franjasDisponibles, serviciosActivos, talleresDestacados] = await Promise.all([
 		db
 			.select()
 			.from(franjas)
@@ -48,12 +48,25 @@ export const load = async ({ platform }) => {
 				)
 			)
 			.orderBy(asc(franjas.date), asc(franjas.startTime)),
-		db.select().from(tiposCita).where(eq(tiposCita.activo, true))
+		db.select().from(tiposCita).where(eq(tiposCita.activo, true)),
+		// Vitrina de la landing: solo 3 filas y las columnas que se muestran (nunca el contenido)
+		db
+			.select({
+				id: talleres.id,
+				nombre: talleres.nombre,
+				precio: talleres.precio,
+				descripcion: talleres.descripcion
+			})
+			.from(talleres)
+			.where(eq(talleres.publicado, true))
+			.orderBy(desc(talleres.creadoEn))
+			.limit(3)
 	]);
 
 	return {
 		franjas: franjasDisponibles,
 		tiposCita: serviciosActivos,
+		talleres: talleresDestacados,
 		paypalHabilitado: paypalDisponible(platform?.env)
 	};
 };

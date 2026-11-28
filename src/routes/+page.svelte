@@ -8,12 +8,13 @@
 	import ProfileSection from '$lib/components/landing/ProfileSection.svelte';
 	import SocialSection from '$lib/components/landing/SocialSection.svelte';
 	import CardsSection from '$lib/components/landing/CardsSection.svelte';
+	import TalleresSection from '$lib/components/landing/TalleresSection.svelte';
 	import AgendaSection from '$lib/components/agenda/AgendaSection.svelte';
 
 	let { data, form } = $props();
 
 	// Orden de las secciones dentro de <main>
-	const SECCION = { hero: 0, perfil: 1, redes: 2, tarjetas: 3, agenda: 4 } as const;
+	const SECCION = { hero: 0, talleres: 1, perfil: 2, redes: 3, tarjetas: 4, agenda: 5 } as const;
 
 	let mainEl: HTMLElement;
 	let curtain: TransitionCurtain;
@@ -38,6 +39,7 @@
 		onReservar={() => nav.goTo(SECCION.agenda)}
 		onHistoria={() => nav.goTo(SECCION.perfil)}
 	/>
+	<TalleresSection active={nav.current === SECCION.talleres} talleres={data.talleres} />
 	<ProfileSection active={nav.current === SECCION.perfil} />
 	<SocialSection active={nav.current === SECCION.redes} />
 	<CardsSection active={nav.current === SECCION.tarjetas} />
